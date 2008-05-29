@@ -61,9 +61,10 @@ at the beginning of an URL in a way so that
 a concise manner (i.e. without specifying all parameters again and again)
 * ideally also plays nicely with default route helpers in tests/specs
 
-You can read about this struggle and to possible, yet unsatisfying solutions 
-[here](). The conclusion so far is that Rails itself does not provide the 
-tools to solve this problem in a clean and dry way.
+You can read about this struggle and to possible, yet unsatisfying solutions
+[here](http://www.artweb-design.de/2007/5/13/concise-localized-rails-url-helpers-solved-twice).
+The conclusion so far is that Rails itself does not provide the tools to solve
+this problem in a clean and dry way.
 
 Another usecase that eventually spawned the manifestation of this plugin was 
 the need to map an arbitrary count of path segments to a certain model 
