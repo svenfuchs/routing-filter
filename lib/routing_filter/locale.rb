@@ -23,16 +23,12 @@ module RoutingFilter
     end
     
     def around_generate(*args, &block)
-      options = args.extract_options!
-      locale = options.delete(:locale) || I18n.locale
+      locale = args.extract_options!.delete(:locale) || I18n.locale
       returning yield do |result|
-        prepend_locale! result, locale if locale.to_sym != @@default_locale
+        if locale.to_sym != @@default_locale
+          result.sub!(%r(^(http.?://[^/]*)?(.*))){ "#{$1}/#{locale}#{$2}" }
+        end 
       end
-    end
-    
-    def prepend_locale!(result, locale)
-      result.match(%r(^(http.?://[^/]*)?(.*)))
-      result.replace "#{$1}/#{locale}#{$2}"
     end
   end
 end
