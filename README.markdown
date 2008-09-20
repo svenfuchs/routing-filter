@@ -22,7 +22,7 @@ The following would be a sceleton of an empty filter:
           # Alter the path here before it gets recognized. 
           # Make sure to yield (calls the next around filter if present and 
           # eventually `recognize_path` on the routeset):
-          returning yield(path, env) do |params|
+          returning yield do |params|
             # You can additionally modify the params here before they get passed
             # to the controller.
           end
