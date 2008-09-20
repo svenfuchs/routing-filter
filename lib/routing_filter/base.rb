@@ -6,12 +6,12 @@ module RoutingFilter
       @options = options
     end
     
-    def around_recognition(route, path, env, &block)
-      yield path, env
+    def around_recognize(*args, &block)
+      yield
     end
     
-    def around_generation(controller, *args, &block)
-      yield options
+    def around_generate(*args, &block)
+      yield
     end
   end
 end

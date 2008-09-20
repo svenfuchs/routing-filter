@@ -14,7 +14,7 @@ module RoutingFilter
     
     # remove the locale from the beginning of the path, pass the path
     # to the given block and set it to the resulting params hash
-    def around_recognition(route, path, env, &block)
+    def around_recognize(path, env, &block)
       locale = nil
       path.sub! %r(^/([a-zA-Z]{2})(?=/|$)) do locale = $1; '' end
       returning yield do |params|
@@ -22,8 +22,8 @@ module RoutingFilter
       end
     end
     
-    def around_generation(controller, *args, &block)
-      options = args.last.is_a?(Hash) ? args.last : {}
+    def around_generate(*args, &block)
+      options = args.extract_options!
       locale = options.delete(:locale) || I18n.locale
       returning yield do |result|
         prepend_locale! result, locale if locale.to_sym != @@default_locale
@@ -31,9 +31,8 @@ module RoutingFilter
     end
     
     def prepend_locale!(result, locale)
-      url, host, path = *result.match(%r(^(http.?://[^/]*)?(.*)))
-      path = "/#{locale}#{path}" unless path =~ %r(^/#{locale})
-      result.replace "#{host}#{path}"
+      result.match(%r(^(http.?://[^/]*)?(.*)))
+      result.replace "#{$1}/#{locale}#{$2}"
     end
   end
 end

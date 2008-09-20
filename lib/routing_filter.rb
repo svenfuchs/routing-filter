@@ -3,35 +3,37 @@ module RoutingFilter
   @@active = true
   
   class << self
-    def around_recognition(route, path, env)
-      return route.recognize_path_without_filtering(path, env) unless RoutingFilter.active
+    def around_recognize(path, env)
+      routes = ActionController::Routing::Routes
+      return routes.recognize_path_without_filtering(path, env) unless RoutingFilter.active
       path = path.dup
-      chain = [lambda{ route.recognize_path_without_filtering(path, env) }]
+      chain = [lambda{ routes.recognize_path_without_filtering(path, env) }]
       ActionController::Routing::Routes.filters.each do |filter|
         chain.unshift lambda{
-          filter.around_recognition(route, path, env, &chain.shift)
+          filter.around_recognize(path, env, &chain.shift)
         }
       end
       chain.shift.call
     end
   
-    def around_generation(controller, *args)
-      return controller.url_for_without_filtering(*args) unless RoutingFilter.active
-      chain = [lambda{ controller.url_for_without_filtering(*args) }]
+    def around_generate(*args)
+      routes = ActionController::Routing::Routes
+      return routes.generate_without_filtering(*args) unless RoutingFilter.active
+      chain = [lambda{ routes.generate_without_filtering(*args) }]
       ActionController::Routing::Routes.filters.each do |filter|
         chain.unshift lambda{
-          filter.around_generation(controller, *args, &chain.shift)
+          filter.around_generate(args.first, &chain.shift)
         }
       end
-      chain.shift.call *args
+      chain.shift.call
     end
   
-    def around_generation_optimized(controller, result, *args)
+    def around_generate_optimized(controller, result, *args)
       return result unless RoutingFilter.active
       chain = [lambda{ result }]
       ActionController::Routing::Routes.filters.each do |filter|
         chain.unshift lambda{
-          filter.around_generation(controller, *args, &chain.shift)
+          filter.around_generate(*args, &chain.shift)
         }
       end
       chain.shift.call
@@ -44,17 +46,8 @@ ActionController::Routing::RouteSet::Mapper.class_eval do
   def filter(name, options = {})
     require "routing_filter/#{name}"
     klass = RoutingFilter.const_get name.to_s.camelize
-    # klass = "RoutingFilter::#{name.to_s.camelize}".constantize
     @set.filters.push klass.new(options)
   end
-end
-
-# hook into url_for and call before and after filters
-ActionController::Base.class_eval do
-  def url_for_with_filtering(*args)
-    RoutingFilter.around_generation(self, *args)
-  end
-  alias_method_chain :url_for, :filtering
 end
 
 # same here for the optimized url generation in named routes
@@ -66,7 +59,7 @@ ActionController::Routing::RouteSet::NamedRouteCollection.class_eval do
       <<-code
         if #{match[2]}
           result = #{match[1]}
-          RoutingFilter.around_generation_optimized self, result, *args
+          RoutingFilter.around_generate_optimized self, result, *args
           return result
         end
       code
@@ -82,10 +75,15 @@ ActionController::Routing::RouteSet.class_eval do
   end
 
   # wrap recognition filters around recognize_path
-  def recognize_path_with_filtering(path, env)
-    RoutingFilter.around_recognition(self, path, env)
+  def recognize_path_with_filtering(*args)
+    RoutingFilter.around_recognize *args
   end
   alias_method_chain :recognize_path, :filtering
+  
+  def generate_with_filtering(*args)
+    RoutingFilter.around_generate *args
+  end
+  alias_method_chain :generate, :filtering
 
   # add some useful information to the request environment
   # right, this is from jamis buck's excellent article about routes internals

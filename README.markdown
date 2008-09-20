@@ -18,7 +18,7 @@ The following would be a sceleton of an empty filter:
 
     module RoutingFilter
       class Awesomeness < Base
-        def around_recognition(route, path, env)
+        def around_recognize(route, path, env)
           # Alter the path here before it gets recognized. 
           # Make sure to yield (calls the next around filter if present and 
           # eventually `recognize_path` on the routeset):
@@ -28,7 +28,7 @@ The following would be a sceleton of an empty filter:
           end
         end
     
-        def around_generation(controller, *args, &block)
+        def around_generate(controller, *args, &block)
           # Alter arguments here before they are passed to `url_for`. 
           # Make sure to yield (calls the next around filter if present and 
           # eventually `url_for` on the controller):

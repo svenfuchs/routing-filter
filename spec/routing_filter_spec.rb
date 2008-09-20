@@ -18,47 +18,51 @@ describe 'RoutingFilter' do
     @set.recognize_path path, options
   end
   
-  def generate_url_for(options = {:controller => 'sections', :action => 'show', :section_id => 1})
+  def url_for(options)
     @controller.send :url_for, options
+  end
+  
+  def section_path(*args)
+    @controller.send :section_path, *args
   end
 
   it 'installs filters to the route set' do
     @locale_filter.should be_instance_of(RoutingFilter::Locale)
     @mock_filter.should be_instance_of(RoutingFilter::Mock)
   end
-
+  
   it 'calls the first filter for route recognition' do
-    @locale_filter.should_receive :around_recognition
+    @locale_filter.should_receive :around_recognize
     recognize_path
   end
-
+  
   it 'calls the second filter for route recognition' do
-    @mock_filter.should_receive :around_recognition
+    @mock_filter.should_receive :around_recognize
     recognize_path
   end
 
   it 'calls the first filter for url generation' do
-    @locale_filter.should_receive :around_generation
-    generate_url_for
+    @locale_filter.should_receive(:around_generate).and_return '/sections/1'
+    url_for :controller => 'sections', :action => 'show', :section_id => 1
   end
 
   it 'calls the second filter for url generation' do
-    @mock_filter.should_receive :around_generation
-    generate_url_for
+    @mock_filter.should_receive(:around_generate).and_return '/sections/1'
+    url_for :controller => 'sections', :action => 'show', :section_id => 1
   end
-
+  
   it 'calls the first filter for named route url_helper' do
-    @locale_filter.should_receive :around_generation
-    @controller.send :section_path, :section_id => 1
+    @locale_filter.should_receive(:around_generate).and_return '/sections/1'
+    section_path :section_id => 1
   end
   
   it 'calls the filter for named route url_helper with "optimized" generation blocks' do
-    @locale_filter.should_receive :around_generation
-    @controller.send :section_path, 1
+    @locale_filter.should_receive(:around_generate).and_return '/sections/1'
+    section_path 1
   end
   
   it 'calls the filter for named route polymorphic_path' do
-    @locale_filter.should_receive :around_generation
-    @controller.send :section_path, Section.new
+    @locale_filter.should_receive(:around_generate).and_return '/sections/1'
+    section_path Section.new
   end
 end
