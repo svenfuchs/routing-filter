@@ -42,7 +42,9 @@ end
 # allows to install a filter to the route set by calling: map.filter 'locale'
 ActionController::Routing::RouteSet::Mapper.class_eval do
   def filter(name, options = {})
-    klass = "RoutingFilter::#{name.to_s.camelize}".constantize
+    require "routing_filter/#{name}"
+    klass = RoutingFilter.const_get name.to_s.camelize
+    # klass = "RoutingFilter::#{name.to_s.camelize}".constantize
     @set.filters.push klass.new(options)
   end
 end

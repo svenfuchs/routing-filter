@@ -1,15 +1,16 @@
-$:.unshift File.dirname(__FILE__) + '/../../vendor/rails'
-$:.unshift(File.dirname(__FILE__) + '/../../vendor/rails/activesupport/lib/active_support')
+$: << File.dirname(__FILE__) + '/../'
+$: << File.dirname(__FILE__) + '/../../lib/'
+$: << File.dirname(__FILE__) + '/../../vendor/rails'
+$: << File.dirname(__FILE__) + '/../../vendor/rails/activesupport/lib/active_support'
 
 require 'action_controller'
 require 'action_controller/test_process'
 require 'activesupport/lib/active_support/vendor'
 
-$LOAD_PATH << File.dirname(__FILE__) + '/../../lib/'
 require 'routing_filter'
 require 'routing_filter/base'
 require 'routing_filter/locale'
-require File.dirname(__FILE__) + '/mock_filter.rb'
+#require File.dirname(__FILE__) + '/mock_filter.rb'
 
 class Section
   def to_param

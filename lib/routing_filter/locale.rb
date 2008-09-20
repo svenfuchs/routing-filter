@@ -1,4 +1,5 @@
 require 'i18n'
+require 'routing_filter/base'
 
 module RoutingFilter
   class Locale < Base
@@ -22,16 +23,17 @@ module RoutingFilter
     end
     
     def around_generation(controller, *args, &block)
-      options = args.extract_options!
-      locale = options.delete(:locale) || I18n.locale.to_sym
+      options = args.last.is_a?(Hash) ? args.last : {}
+      locale = options.delete(:locale) || I18n.locale
       returning yield do |result|
-        prepend_locale! result, locale if locale != @@default_locale
+        prepend_locale! result, locale if locale.to_sym != @@default_locale
       end
     end
     
     def prepend_locale!(result, locale)
-      result.match %r(^(http.?://[^/]*)?(.*))
-      result.replace "#{$1}/#{locale}#{$2}"
+      url, host, path = *result.match(%r(^(http.?://[^/]*)?(.*)))
+      path = "/#{locale}#{path}" unless path =~ %r(^/#{locale})
+      result.replace "#{host}#{path}"
     end
   end
 end
