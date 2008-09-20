@@ -61,7 +61,7 @@ at the beginning of an URL in a way so that
 a concise manner (i.e. without specifying all parameters again and again)
 * ideally also plays nicely with default route helpers in tests/specs
 
-You can read about this struggle and to possible, yet unsatisfying solutions
+You can read about this struggle and two possible, yet unsatisfying solutions
 [here](http://www.artweb-design.de/2007/5/13/concise-localized-rails-url-helpers-solved-twice).
 The conclusion so far is that Rails itself does not provide the tools to solve
 this problem in a clean and dry way.
@@ -76,27 +76,28 @@ map URL paths to a nested tree of models like so:
       + api
       + wiki
   
-E.g. the docs section should map to the path /docs, the api section to 
-the path /docs/api and so on. Furthermore, after these paths need to be 
-more things to be specified. E.g. the wiki needs define a usual Rails resource
-like /docs/wiki/pages/1/edit.
+E.g. the docs section should map to the path `/docs`, the api section to 
+the path `/docs/api` and so on. Furthermore, after these paths there need to be 
+more things to be specified. E.g. the wiki needs to define a whole Rails 
+resource with URLs like `/docs/wiki/pages/1/edit`.
 
 The only way to solve this problem with Rails' routing toolkit is to map
-a bold /*whatever catch-all ("glob") and process the whole path in a custom
-dispatcher.
+a big, bold `/*everything` catch-all ("globbing") route and process the whole 
+path in a custom dispatcher.
 
 This, of course, is a really unsatisfying solution because one has to
-reimplement everything that Rails routes are here to help with, both with
-regards to URL recognition (like parameter mappings, resources, ...) and
-generation (url\_helpers don't work).
+reimplement everything that Rails routes are here to help with: regarding both 
+URL recognition (like parameter mappings, resources, ...) and generation 
+(url\_helpers).
 
 ## Solution
 
-This plugin offers a solution that takes exactly the opposite route. Instead
-of trying to change things *between* the URL recognition and generation stages
-to achieve the desired result it *wraps around* the whole routing system and
-allows to filter both what goes into it (URL recognition) and what comes out
-of it (URL generation). 
+This plugin offers a solution that takes exactly the opposite route. 
+
+Instead of trying to change things *between* the URL recognition and
+generation stages to achieve the desired result it *wraps around* the whole
+routing system and allows to pre- and post-filter both what goes into it 
+(URL recognition) and what comes out of it (URL generation).
 
 This way we can leave *everything* else completely untouched. 
 
