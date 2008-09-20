@@ -1,17 +1,14 @@
 module RoutingFilter
   class Base
-    attr_reader :options
+    attr_accessor :successor, :options
     
     def initialize(options)
       @options = options
     end
-    
-    def around_recognize(*args, &block)
-      yield
-    end
-    
-    def around_generate(*args, &block)
-      yield
+
+    def run(method, *args, &block)
+      successor = @successor ? lambda { @successor.run(method, *args, &block) } : block
+      send method, *args, &successor
     end
   end
 end

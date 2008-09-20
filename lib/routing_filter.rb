@@ -2,41 +2,14 @@ module RoutingFilter
   mattr_accessor :active
   @@active = true
   
-  class << self
-    def around_recognize(path, env)
-      routes = ActionController::Routing::Routes
-      return routes.recognize_path_without_filtering(path, env) unless RoutingFilter.active
-      path = path.dup
-      chain = [lambda{ routes.recognize_path_without_filtering(path, env) }]
-      ActionController::Routing::Routes.filters.each do |filter|
-        chain.unshift lambda{
-          filter.around_recognize(path, env, &chain.shift)
-        }
-      end
-      chain.shift.call
+  class Chain < Array
+    def << (filter)
+      filter.successor = last
+      super
     end
   
-    def around_generate(*args)
-      routes = ActionController::Routing::Routes
-      return routes.generate_without_filtering(*args) unless RoutingFilter.active
-      chain = [lambda{ routes.generate_without_filtering(*args) }]
-      ActionController::Routing::Routes.filters.each do |filter|
-        chain.unshift lambda{
-          filter.around_generate(args.first, &chain.shift)
-        }
-      end
-      chain.shift.call
-    end
-  
-    def around_generate_optimized(controller, result, *args)
-      return result unless RoutingFilter.active
-      chain = [lambda{ result }]
-      ActionController::Routing::Routes.filters.each do |filter|
-        chain.unshift lambda{
-          filter.around_generate(*args, &chain.shift)
-        }
-      end
-      chain.shift.call
+    def run(method, *args, &final)
+      RoutingFilter.active ? last.run(method, *args, &final) : final.call
     end
   end
 end
@@ -46,7 +19,7 @@ ActionController::Routing::RouteSet::Mapper.class_eval do
   def filter(name, options = {})
     require "routing_filter/#{name}"
     klass = RoutingFilter.const_get name.to_s.camelize
-    @set.filters.push klass.new(options)
+    @set.filters << klass.new(options)
   end
 end
 
@@ -59,7 +32,7 @@ ActionController::Routing::RouteSet::NamedRouteCollection.class_eval do
       <<-code
         if #{match[2]}
           result = #{match[1]}
-          RoutingFilter.around_generate_optimized self, result, *args
+          ActionController::Routing::Routes.filters.run :around_generate, *args, &lambda{ result }
           return result
         end
       code
@@ -69,19 +42,17 @@ ActionController::Routing::RouteSet::NamedRouteCollection.class_eval do
 end
 
 ActionController::Routing::RouteSet.class_eval do
-  # allow to register filters to the route set
   def filters
-    @filters ||= []
+    @filters ||= RoutingFilter::Chain.new
   end
 
-  # wrap recognition filters around recognize_path
-  def recognize_path_with_filtering(*args)
-    RoutingFilter.around_recognize *args
+  def recognize_path_with_filtering(path, env)
+    filters.run :around_recognize, path, env, &lambda{ recognize_path_without_filtering(path, env) }
   end
   alias_method_chain :recognize_path, :filtering
   
   def generate_with_filtering(*args)
-    RoutingFilter.around_generate *args
+    filters.run :around_generate, args.first, &lambda{ generate_without_filtering(*args) }
   end
   alias_method_chain :generate, :filtering
 
