@@ -10,7 +10,7 @@ module RoutingFilter
       yield path, env
     end
     
-    def around_generation(controller, options, &block)
+    def around_generation(controller, *args, &block)
       yield options
     end
   end
