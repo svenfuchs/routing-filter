@@ -11,10 +11,20 @@ require 'routing_filter'
 require 'routing_filter/locale'
 require 'routing_filter/pagination'
 
+class Site
+end
+
 class Section
-  def to_param
-    1
-  end
+  def id; 1 end
+  alias :to_param :id
+  
+  def type; 'Section' end
+  
+  def path; 'section' end
+end
+
+class Article
+  def to_param; 1 end
 end
 
 module RoutingFilterHelpers

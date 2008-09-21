@@ -4,6 +4,7 @@ module RoutingFilter
     
     def initialize(options)
       @options = options
+      options.each{|name, value| instance_variable_set :"@#{name}", value }
     end
 
     def run(method, *args, &block)
