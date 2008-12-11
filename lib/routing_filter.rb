@@ -37,6 +37,13 @@ ActionController::Routing::RouteSet::NamedRouteCollection.class_eval do
 end
 
 ActionController::Routing::RouteSet.class_eval do
+  def clear_with_filtering!
+    returning clear_without_filtering! do
+      @filters.clear if @filters
+    end
+  end
+  alias_method_chain :clear!, :filtering
+
   def filters
     @filters ||= RoutingFilter::Chain.new
   end
