@@ -7,7 +7,7 @@ describe 'RoutingFilter' do
     @controller = instantiate_controller :locale => 'de', :section_id => 1
     @set = draw_routes do |map|
       map.section 'sections/:section_id', :controller => 'sections', :action => "show"
-      map.filter 'locale'
+      map.filter 'locale', { :file => 'routing_filter/locale' }
       map.filter 'pagination'
     end
     @locale_filter = @set.filters.first
