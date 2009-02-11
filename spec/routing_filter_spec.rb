@@ -57,12 +57,14 @@ describe 'RoutingFilter' do
   end
   
   it 'calls the filter for named route url_helper with "optimized" generation blocks' do
-    @locale_filter.should_receive(:around_generate).and_return '/sections/1'
+    # at_least(1) since the inline code comments in ActionController::Routing::RouteSet::NamedRouteCollection#define_url_helper also call us (as of http://github.com/rails/rails/commit/a2270ef2594b97891994848138614657363f2806)
+    @locale_filter.should_receive(:around_generate).at_least(1).and_return '/sections/1'
     section_path 1
   end
   
   it 'calls the filter for named route polymorphic_path' do
-    @locale_filter.should_receive(:around_generate).and_return '/sections/1'
+    # at_least(1) since the inline code comments in ActionController::Routing::RouteSet::NamedRouteCollection#define_url_helper also call us (as of http://github.com/rails/rails/commit/a2270ef2594b97891994848138614657363f2806)
+    @locale_filter.should_receive(:around_generate).at_least(1).and_return '/sections/1'
     section_path Section.new
   end
 end

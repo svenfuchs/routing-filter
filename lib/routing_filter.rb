@@ -29,13 +29,8 @@ ActionController::Routing::RouteSet::NamedRouteCollection.class_eval do
   def generate_optimisation_block_with_filtering(*args)
     code = generate_optimisation_block_without_filtering *args
     if match = code.match(%r(^return (.*) if (.*)))
-      <<-code
-        if #{match[2]}
-          result = #{match[1]}
-          ActionController::Routing::Routes.filters.run :around_generate, *args, &lambda{ result }
-          return result
-        end
-      code
+      # returned string must not contain newlines, or we'll spill out of inline code comments in ActionController::Routing::RouteSet::NamedRouteCollection#define_url_helper (as of http://github.com/rails/rails/commit/a2270ef2594b97891994848138614657363f2806)
+      "returning(#{match[1]}) { |result| ActionController::Routing::Routes.filters.run :around_generate, *args, &lambda{ result } } if #{match[2]}"
     end
   end
   alias_method_chain :generate_optimisation_block, :filtering
