@@ -16,7 +16,11 @@ module RoutingFilter
     # to the given block and set it to the resulting params hash
     def around_recognize(path, env, &block)
       locale = nil
-      path.sub! %r(^/([a-zA-Z]{2})(?=/|$)) do locale = $1; '' end
+
+      # only match locales we have available
+      locale_match = I18n.available_locales.map{|l|l.to_s}.join('|')
+      path.sub! %r(^/(#{locale_match})(?=/|$)) do locale = $1; '' end
+
       returning yield do |params|
         params[:locale] = locale if locale
       end
