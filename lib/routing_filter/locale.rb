@@ -11,15 +11,15 @@ module RoutingFilter
         @@default_locale = locale.to_sym
       end
     end
-    
+
+    locale_match = %r(^/(#{I18n.available_locales.map{|l|l.to_s}.join('|')})(?=/|$))
+
     # remove the locale from the beginning of the path, pass the path
     # to the given block and set it to the resulting params hash
     def around_recognize(path, env, &block)
       locale = nil
 
-      # only match locales we have available
-      locale_match = I18n.available_locales.map{|l|l.to_s}.join('|')
-      path.sub! %r(^/(#{locale_match})(?=/|$)) do locale = $1; '' end
+      path.sub! locale_match do locale = $1; '' end
 
       returning yield do |params|
         params[:locale] = locale if locale
@@ -29,9 +29,7 @@ module RoutingFilter
     def around_generate(*args, &block)
       locale = args.extract_options!.delete(:locale) || I18n.locale
       returning yield do |result|
-        if locale.to_sym != @@default_locale
           result.sub!(%r(^(http.?://[^/]*)?(.*))){ "#{$1}/#{locale}#{$2}" }
-        end 
       end
     end
   end
