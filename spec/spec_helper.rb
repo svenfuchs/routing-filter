@@ -17,9 +17,7 @@ end
 class Section
   def id; 1 end
   alias :to_param :id
-  
   def type; 'Section' end
-  
   def path; 'section' end
 end
 
@@ -45,5 +43,41 @@ module RoutingFilterHelpers
       controller.instance_variable_set :@url, url
       controller
     end
+  end
+
+  def should_recognize_path(path, params)
+    @set.recognize_path(path, {}).should == params
+  end
+
+  def section_path(*args)
+    @controller.send :section_path, *args
+  end
+
+  def section_article_path(*args)
+    @controller.send :section_article_path, *args
+  end
+
+  def url_for(*args)
+    @controller.send :url_for, *args
+  end
+
+  def setup_environment
+    RoutingFilter::Locale.default_locale = :en
+    RoutingFilter::Locale.locale_match = [:en,:de,:fi]
+    I18n.default_locale = :en
+    I18n.locale = :en
+
+    @controller = instantiate_controller :locale => 'de', :id => 1
+    @set = draw_routes do |map|
+      map.filter 'locale'
+      map.filter 'pagination'
+      map.section 'sections/:id', :controller => 'sections', :action => "show"
+      map.section_article 'sections/:section_id/articles/:id', :controller => 'articles', :action => "show"
+    end
+
+    @section_params = {:controller => 'sections', :action => "show", :id => "1"}
+    @article_params = {:controller => 'articles', :action => "show", :section_id => "1", :id => "1"}
+    @locale_filter = @set.filters.first
+    @pagination_filter = @set.filters.last
   end
 end
