@@ -41,6 +41,10 @@ describe 'RoutingFilter', 'url generation' do
       it 'works on section_path with both a locale and page option' do
         section_path(:id => 1, :locale => :fi, :page => 2).should == '/fi/sections/1/pages/2'
       end
+
+      it 'should not prepend an invalid locale to section_path' do
+        section_path(:id => 1, :locale => :aa).should == '/sections/1'
+      end
     end
 
     describe "a nested resource" do
@@ -68,6 +72,10 @@ describe 'RoutingFilter', 'url generation' do
 
       it 'works on section_article_path with both a locale and page option' do
         section_article_path(:section_id => 1, :id => 1, :locale => :fi, :page => 2).should == '/fi/sections/1/articles/1/pages/2'
+      end
+
+      it 'should not prepend an invalid locale to section_article_path' do
+        section_article_path(:section_id => 1, :id => 1, :locale => :aa).should == '/sections/1/articles/1'
       end
     end
   end
@@ -99,6 +107,10 @@ describe 'RoutingFilter', 'url generation' do
       it 'works for section_path with both a locale and page option' do
         section_path(1, :locale => :fi, :page => 2).should == '/fi/sections/1/pages/2'
       end
+
+      it 'should not prepend an invalid locale to section_path' do
+        section_path(1, :locale => :aa).should == '/sections/1'
+      end
     end
 
     describe "a nested resource" do
@@ -126,6 +138,10 @@ describe 'RoutingFilter', 'url generation' do
 
       it 'works for section_article_path with both a locale and page option' do
         section_article_path(1, 1, :locale => :fi, :page => 2).should == '/fi/sections/1/articles/1/pages/2'
+      end
+
+      it 'should not prepend an invalid locale to section_article_path' do
+        section_article_path(1, 1, :locale => :aa).should == '/sections/1/articles/1'
       end
     end
   end
@@ -157,6 +173,10 @@ describe 'RoutingFilter', 'url generation' do
       it 'works for section_path with both a locale and page option' do
         section_path(@section, :locale => :fi, :page => 2).should == '/fi/sections/1/pages/2'
       end
+
+      it 'should not prepend an invalid locale to section_path' do
+        section_path(@section, :locale => :aa).should == '/sections/1'
+      end
     end
 
     describe "a nested resource" do
@@ -184,6 +204,10 @@ describe 'RoutingFilter', 'url generation' do
 
       it 'works for section_article_path with both a locale and page option' do
         section_article_path(@section, @article, :locale => :fi, :page => 2).should == '/fi/sections/1/articles/1/pages/2'
+      end
+
+      it 'should not prepend an invalid locale to section_article_path' do
+        section_article_path(@section, @article, :locale => :aa).should == '/sections/1/articles/1'
       end
     end
   end
@@ -221,6 +245,11 @@ describe 'RoutingFilter', 'url generation' do
         params = @section_params.update :id => @section, :locale => :fi, :page => 2
         url_for(params).should == 'http://test.host/fi/sections/1/pages/2'
       end
+
+      it 'should not prepend an invalid locale to section_path' do
+        params = @section_params.update :id => @section, :locale => :aa
+        url_for(params).should == 'http://test.host/sections/1'
+      end
     end
 
     describe "a nested resource" do
@@ -254,6 +283,11 @@ describe 'RoutingFilter', 'url generation' do
       it 'works for url_for result with both a locale and page option' do
         params = @article_params.update :section_id => @section, :id => @article, :locale => :fi, :page => 2
         url_for(params).should == 'http://test.host/fi/sections/1/articles/1/pages/2'
+      end
+
+      it 'should not prepend an invalid locale to url_for result' do
+        params = @article_params.update :section_id => @section, :id => @article, :locale => :aa
+        url_for(params).should == 'http://test.host/sections/1/articles/1'
       end
     end
   end
