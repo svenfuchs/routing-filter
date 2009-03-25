@@ -6,7 +6,7 @@ module RoutingFilter
     @@default_locale = :en
     cattr_reader :default_locale
 
-    @@locales = I18n.available_locales
+    @@locales = I18n.available_locales.collect { |l| l.to_s }
     cattr_reader :locales
 
     class << self
@@ -14,7 +14,7 @@ module RoutingFilter
         @@default_locale = locale.to_sym
       end
       def locales=(locales)
-        @@locales = locales
+        @@locales = locales.collect { |l| l.to_s }
       end
       def locale_match
         %r(^/(#{@@locales.map{|l|l.to_s}.join('|')})(?=/|$))
@@ -34,7 +34,8 @@ module RoutingFilter
     def around_generate(*args, &block)
       locale = args.extract_options!.delete(:locale)
       locale = I18n.locale if locale.nil?
-      locale = nil if locale && !@@locales.include?(locale.to_sym)
+      locale = nil if locale && !@@locales.include?(locale.to_s)
+
       returning yield do |result|
         locale ? result.sub!(%r(^(http.?://[^/]*)?(.*))){ "#{$1}/#{locale}#{$2}" } : result
       end

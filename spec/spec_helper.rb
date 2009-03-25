@@ -63,7 +63,7 @@ module RoutingFilterHelpers
 
   def setup_environment
     RoutingFilter::Locale.default_locale = :en
-    RoutingFilter::Locale.locales = [:en,:de,:fi]
+    RoutingFilter::Locale.locales = [:en,'en-US',:de,:fi,'en-UK']
     I18n.default_locale = :en
     I18n.locale = :en
 

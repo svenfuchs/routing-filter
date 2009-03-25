@@ -49,6 +49,10 @@ describe 'RoutingFilter', 'url recognition' do
     end
   end
 
+  it 'recognizes the path /en-US/sections/1 and does set a :locale param' do
+    should_recognize_path '/en-US/sections/1', @section_params.update(:locale => 'en-US')
+  end
+
   it 'recognizes the path /sections/1/articles/1 and does not set a :locale param' do
     should_recognize_path '/sections/1/articles/1', @article_params
   end
@@ -66,4 +70,9 @@ describe 'RoutingFilter', 'url recognition' do
       true
     end
   end
+
+  it 'recognizes the path /en-US/sections/1/articles/1 and does set a :locale param' do
+    should_recognize_path '/en-US/sections/1/articles/1', @article_params.update(:locale => 'en-US')
+  end
+
 end
