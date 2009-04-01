@@ -16,7 +16,7 @@ module RoutingFilter
     # to the given block and set it to the resulting params hash
     def around_recognize(path, env, &block)
       locale = nil
-      path.sub! %r(^/([a-zA-Z]{2})(?=/|$)) do locale = $1; '' end
+      path.sub! %r(^/([a-zA-Z]{2}|[a-zA-Z]{2}\-[a-zA-Z]{2})(?=/|$)) do locale = $1; '' end
       returning yield do |params|
         params[:locale] = locale if locale
       end
