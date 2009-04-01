@@ -17,7 +17,7 @@ module RoutingFilter
         @@locales = locales.collect { |l| l.to_s }
       end
       def locale_match
-        %r(^/(#{@@locales.map{|l|l.to_s}.join('|')})(?=/|$))
+        %r(^/(#{@@locales.map{|l|l.to_s.gsub("-", "\\-")}.join('|')})(?=/|$))
       end
     end
 
@@ -25,7 +25,7 @@ module RoutingFilter
     # to the given block and set it to the resulting params hash
     def around_recognize(path, env, &block)
       locale = nil
-      path.sub!(RoutingFilter::Locale.locale_match){ locale = $1; '' }
+      path.sub!(RoutingFilter::Locale.locale_match) do locale = $1; '' end
       returning yield do |params|
         params[:locale] = locale if locale
       end
@@ -37,7 +37,8 @@ module RoutingFilter
       locale = nil if locale && !@@locales.include?(locale.to_s)
 
       returning yield do |result|
-        locale ? result.sub!(%r(^(http.?://[^/]*)?(.*))){ "#{$1}/#{locale}#{$2}" } : result
+        target = result.is_a?(Array) ? result.first : result
+        locale ? target.sub!(%r(^(http.?://[^/]*)?(.*))){ "#{$1}/#{locale}#{$2}" } : target
       end
     end
   end

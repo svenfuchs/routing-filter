@@ -17,7 +17,7 @@ end
 # allows to install a filter to the route set by calling: map.filter 'locale'
 ActionController::Routing::RouteSet::Mapper.class_eval do
   def filter(name, options = {})
-    require "routing_filter/#{name}"
+    require options.delete(:file) || "routing_filter/#{name}"
     klass = RoutingFilter.const_get name.to_s.camelize
     @set.filters << klass.new(options)
   end
@@ -37,6 +37,13 @@ ActionController::Routing::RouteSet::NamedRouteCollection.class_eval do
 end
 
 ActionController::Routing::RouteSet.class_eval do
+  def clear_with_filtering!
+    returning clear_without_filtering! do
+      @filters.clear if @filters
+    end
+  end
+  alias_method_chain :clear!, :filtering
+
   def filters
     @filters ||= RoutingFilter::Chain.new
   end
