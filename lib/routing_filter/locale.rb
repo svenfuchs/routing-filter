@@ -28,7 +28,7 @@ module RoutingFilter
         if locale.to_sym != @@default_locale
           target = result.is_a?(Array) ? result.first : result
           target.sub!(%r(^(http.?://[^/]*)?(.*))){ "#{$1}/#{locale}#{$2}" }
-<        end 
+        end 
       end
     end
   end
