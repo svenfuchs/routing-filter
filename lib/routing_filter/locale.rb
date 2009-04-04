@@ -9,6 +9,9 @@ module RoutingFilter
     @@locales = I18n.available_locales.collect { |l| l.to_s }
     cattr_reader :locales
 
+    @@include_default_locale = true
+    cattr_accessor :include_default_locale
+
     class << self
       def default_locale=(locale)
         @@default_locale = locale.to_sym
@@ -37,8 +40,10 @@ module RoutingFilter
       locale = nil if locale && !@@locales.include?(locale.to_s)
 
       returning yield do |result|
-        target = result.is_a?(Array) ? result.first : result
-        locale ? target.sub!(%r(^(http.?://[^/]*)?(.*))){ "#{$1}/#{locale}#{$2}" } : target
+        if @@include_default_locale || (!@@include_default_locale && locale && locale.to_sym != @@default_locale)
+          target = result.is_a?(Array) ? result.first : result
+          locale ? target.sub!(%r(^(http.?://[^/]*)?(.*))){ "#{$1}/#{locale}#{$2}" } : target
+        end
       end
     end
   end

@@ -49,6 +49,11 @@ describe 'RoutingFilter', 'url generation' do
       it 'should prepend a longer locale to section_path' do
         section_path(:id => 1, :locale => 'en-US').should == '/en-US/sections/1'
       end
+
+      it 'should not prepend the default locale when configured not to' do
+        RoutingFilter::Locale.include_default_locale = false
+        section_path(:id => 1, :locale => :en).should == '/sections/1'
+      end
     end
 
     describe "a nested resource" do
@@ -84,6 +89,11 @@ describe 'RoutingFilter', 'url generation' do
 
       it 'should prepend a longer locale to section_article_path' do
         section_article_path(:section_id => 1, :id => 1, :locale => 'en-US').should == '/en-US/sections/1/articles/1'
+      end
+
+      it 'should not prepend the default locale when configured not to' do
+        RoutingFilter::Locale.include_default_locale = false
+        section_article_path(:section_id => 1, :id => 1, :locale => :en).should == '/sections/1/articles/1'
       end
     end
   end
@@ -123,6 +133,11 @@ describe 'RoutingFilter', 'url generation' do
       it 'should prepend a longer locale to section_path' do
         section_path(1, :locale => 'en-US').should == '/en-US/sections/1'
       end
+
+      it 'should not prepend the default locale when configured not to' do
+        RoutingFilter::Locale.include_default_locale = false
+        section_path(1, :locale => :en).should == '/sections/1'
+      end
     end
 
     describe "a nested resource" do
@@ -158,6 +173,11 @@ describe 'RoutingFilter', 'url generation' do
 
       it 'should prepend a longer locale to section_article_path' do
         section_article_path(1, 1, :locale => 'en-US').should == '/en-US/sections/1/articles/1'
+      end
+
+      it 'should not prepend the default locale when configured not to' do
+        RoutingFilter::Locale.include_default_locale = false
+        section_article_path(1, 1, :locale => :en).should == '/sections/1/articles/1'
       end
     end
   end
@@ -197,6 +217,11 @@ describe 'RoutingFilter', 'url generation' do
       it 'should prepend a longer locale to section_path' do
         section_path(@section, :locale => 'en-US').should == '/en-US/sections/1'
       end
+
+      it 'should not prepend the default locale when configured not to' do
+        RoutingFilter::Locale.include_default_locale = false
+        section_path(@section, :locale => :en).should == '/sections/1'
+      end
     end
 
     describe "a nested resource" do
@@ -232,6 +257,11 @@ describe 'RoutingFilter', 'url generation' do
 
       it 'should prepend a longer locale to section_article_path' do
         section_article_path(@section, @article, :locale => 'en-US').should == '/en-US/sections/1/articles/1'
+      end
+
+      it 'should not prepend the default locale when configured not to' do
+        RoutingFilter::Locale.include_default_locale = false
+        section_article_path(@section, @article, :locale => :en).should == '/sections/1/articles/1'
       end
     end
   end
@@ -279,6 +309,12 @@ describe 'RoutingFilter', 'url generation' do
         params = @section_params.update :id => @section, :locale => 'en-US'
         url_for(params).should == 'http://test.host/en-US/sections/1'
       end
+
+      it 'should not prepend the default locale when configured not to' do
+        RoutingFilter::Locale.include_default_locale = false
+        params = @section_params.update :id => @section, :locale => :en
+        url_for(params).should == 'http://test.host/sections/1'
+      end
     end
 
     describe "a nested resource" do
@@ -322,6 +358,12 @@ describe 'RoutingFilter', 'url generation' do
       it 'should prepend a longer locale to section_article_path' do
         params = @article_params.update :section_id => @section, :id => @article, :locale => 'en-US'
         url_for(params).should == 'http://test.host/en-US/sections/1/articles/1'
+      end
+
+      it 'should not prepend the default locale when configured not to' do
+        RoutingFilter::Locale.include_default_locale = false
+        params = @article_params.update :section_id => @section, :id => @article, :locale => :en
+        url_for(params).should == 'http://test.host/sections/1/articles/1'
       end
     end
   end
