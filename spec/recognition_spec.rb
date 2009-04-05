@@ -4,7 +4,7 @@ describe 'RoutingFilter', 'url recognition' do
   include RoutingFilterHelpers
 
   before :each do
-    setup_environment
+    setup_environment :locale, :pagination
   end
 
   it 'recognizes the path /de/sections/1 and sets the :locale param' do
@@ -49,7 +49,7 @@ describe 'RoutingFilter', 'url recognition' do
     end
   end
 
-  it 'recognizes the path /en-US/sections/1 and does set a :locale param' do
+  it 'recognizes the path /en-US/sections/1 and sets a :locale param' do
     should_recognize_path '/en-US/sections/1', @section_params.update(:locale => 'en-US')
   end
 
@@ -61,18 +61,11 @@ describe 'RoutingFilter', 'url recognition' do
     should_recognize_path '/sections/1/articles/1', @article_params
   end
 
-  # Test that routing errors are thrown for invalid locales
-  it 'does not recognize the path /aa/sections/1/articles/1 and does not set a :locale param' do
-    begin
-      should_recognize_path '/aa/sections/1/articles/1', @article_params.update(:locale => 'aa')
-      false
-    rescue ActionController::RoutingError
-      true
-    end
+  it 'invalid locale: does not recognize the path /aa/sections/1/articles/1 and does not set a :locale param' do
+    lambda { @set.recognize_path('/aa/sections/1/articles/1', {}) }.should raise_error(ActionController::RoutingError)
   end
 
-  it 'recognizes the path /en-US/sections/1/articles/1 and does set a :locale param' do
+  it 'recognizes the path /en-US/sections/1/articles/1 and sets a :locale param' do
     should_recognize_path '/en-US/sections/1/articles/1', @article_params.update(:locale => 'en-US')
   end
-
 end

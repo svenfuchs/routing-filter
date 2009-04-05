@@ -4,7 +4,7 @@ describe 'RoutingFilter' do
   include RoutingFilterHelpers
 
   before :each do
-    setup_environment
+    setup_environment :locale, :pagination
   end
 
   def recognize_path(path = '/de/sections/1', options = {})

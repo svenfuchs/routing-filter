@@ -4,14 +4,11 @@ describe 'RoutingFilter', 'url generation' do
   include RoutingFilterHelpers
 
   before :each do
-    setup_environment
+    setup_environment :locale, :pagination
 
     @site = Site.new
     @section = Section.new
     @article = Article.new
-
-    Section.stub!(:types).and_return ['Section']
-    Section.stub!(:find).and_return @section
   end
 
   describe "named route url_helpers" do

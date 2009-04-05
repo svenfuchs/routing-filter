@@ -51,6 +51,10 @@ module RoutingFilterHelpers
     @set.recognize_path(path, {}).should == params
   end
 
+  def home_path(*args)
+    @controller.send :home_path, *args
+  end
+
   def section_path(*args)
     @controller.send :section_path, *args
   end
@@ -59,11 +63,15 @@ module RoutingFilterHelpers
     @controller.send :section_article_path, *args
   end
 
+  def admin_articles_path(*args)
+    @controller.send :admin_articles_path, *args
+  end
+
   def url_for(*args)
     @controller.send :url_for, *args
   end
 
-  def setup_environment
+  def setup_environment(*filters)
     RoutingFilter::Locale.locales = [:en, 'en-US', :de, :fi, 'en-UK']
     RoutingFilter::Locale.include_default_locale = true
     I18n.default_locale = :en
@@ -71,10 +79,12 @@ module RoutingFilterHelpers
 
     @controller = instantiate_controller :locale => 'de', :id => 1
     @set = draw_routes do |map|
-      map.filter 'locale'
-      map.filter 'pagination'
-      map.section 'sections/:id', :controller => 'sections', :action => "show"
+      yield map if block_given?
+      filters.each { |filter| map.filter filter }
+      map.section 'sections/:id.:format', :controller => 'sections', :action => "show"
       map.section_article 'sections/:section_id/articles/:id', :controller => 'articles', :action => "show"
+      map.admin_articles 'admin/articles/:id', :controller => 'admin/articles', :action => "index"
+      map.home '/', :controller => 'home', :action => 'index'
     end
 
     @section_params = {:controller => 'sections', :action => "show", :id => "1"}
