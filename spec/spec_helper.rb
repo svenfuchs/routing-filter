@@ -1,11 +1,13 @@
 $: << File.dirname(__FILE__)
 $: << File.dirname(__FILE__) + '/../lib/'
-$: << File.dirname(__FILE__) + '/../vendor/rails/actionpack/lib'
-$: << File.dirname(__FILE__) + '/../vendor/rails/activesupport/lib'
 
+require 'rubygems'
+require 'actionpack'
+require 'activesupport'
 require 'action_controller'
 require 'action_controller/test_process'
 require 'active_support/vendor'
+require 'spec'
 
 require 'routing_filter'
 require 'routing_filter/locale'
