@@ -41,9 +41,8 @@ end
 
 ActionController::Routing::RouteSet.class_eval do
   def clear_with_filtering!
-    returning clear_without_filtering! do
-      @filters.clear if @filters
-    end
+    @filters.clear if @filters
+    clear_without_filtering!
   end
   alias_method_chain :clear!, :filtering
 
