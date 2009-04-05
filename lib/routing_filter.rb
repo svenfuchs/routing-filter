@@ -1,13 +1,13 @@
 module RoutingFilter
   mattr_accessor :active
   @@active = true
-  
+
   class Chain < Array
     def << (filter)
       filter.successor = last
       super
     end
-  
+
     def run(method, *args, &final)
       RoutingFilter.active && !last.nil? ? last.run(method, *args, &final) : final.call
     end
@@ -29,8 +29,11 @@ ActionController::Routing::RouteSet::NamedRouteCollection.class_eval do
   def generate_optimisation_block_with_filtering(*args)
     code = generate_optimisation_block_without_filtering *args
     if match = code.match(%r(^return (.*) if (.*)))
-      # returned string must not contain newlines, or we'll spill out of inline code comments in ActionController::Routing::RouteSet::NamedRouteCollection#define_url_helper (as of http://github.com/rails/rails/commit/a2270ef2594b97891994848138614657363f2806)
-      "returning(#{match[1]}) { |result| ActionController::Routing::Routes.filters.run :around_generate, *args, &lambda{ result } } if #{match[2]}"
+      # returned string must not contain newlines, or we'll spill out of inline code comments in
+      # ActionController::Routing::RouteSet::NamedRouteCollection#define_url_helper
+      "returning(#{match[1]}) { |result|" +
+      "  ActionController::Routing::Routes.filters.run(:around_generate, *args, &lambda{ result }) " +
+      "} if #{match[2]}"
     end
   end
   alias_method_chain :generate_optimisation_block, :filtering
@@ -53,7 +56,7 @@ ActionController::Routing::RouteSet.class_eval do
     filters.run :around_recognize, path, env, &lambda{ recognize_path_without_filtering(path, env) }
   end
   alias_method_chain :recognize_path, :filtering
-  
+
   def generate_with_filtering(*args)
     filters.run :around_generate, args.first, &lambda{ generate_without_filtering(*args) }
   end
