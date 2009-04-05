@@ -3,19 +3,12 @@ require 'routing_filter/base'
 
 module RoutingFilter
   class Locale < Base
-    @@default_locale = :en
-    cattr_reader :default_locale
-
     @@include_default_locale = true
     cattr_writer :include_default_locale
 
     class << self
       def include_default_locale?
         @@include_default_locale
-      end
-
-      def default_locale=(locale)
-        @@default_locale = locale.to_sym
       end
 
       def locales
@@ -67,7 +60,7 @@ module RoutingFilter
       end
 
       def default_locale?(locale)
-        locale && locale.to_sym == @@default_locale
+        locale && locale.to_sym == I18n.default_locale
       end
 
       def prepend_locale!(url, locale)
