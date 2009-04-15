@@ -27,7 +27,7 @@ module RoutingFilter
       end
 
       def append_page!(url, page)
-        url.replace "#{url}/pages/#{page}"
+        url.sub!(/($|\?)/) { "/pages/#{page}#{$1}" }
       end
   end
 end

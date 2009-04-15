@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
-describe 'RoutingFilter::ForceExtension', 'url recognition' do
+describe 'RoutingFilter::ForceExtension' do
   include RoutingFilterHelpers
 
   before :each do
