@@ -5,6 +5,9 @@ module RoutingFilter
   class Locale < Base
     @@include_default_locale = true
     cattr_writer :include_default_locale
+    
+    @@locale_aliases = {}
+    @@reverse_aliases = nil
 
     class << self
       def include_default_locale?
@@ -20,7 +23,7 @@ module RoutingFilter
       end
 
       def locales_pattern
-        @@locales_pattern ||= %r(^/(#{self.locales.map { |l| Regexp.escape(l.to_s) }.join('|')})(?=/|$))
+        @@locales_pattern ||= /^\/(#{self.locales.concat(@@locale_aliases.values).map { |l| Regexp.escape(l.to_s) }.join('|')})(?=\/|$)/i
       end
     end
 
@@ -48,7 +51,8 @@ module RoutingFilter
 
       def extract_locale!(path)
         path.sub! self.class.locales_pattern, ''
-        $1
+        @@reverse_aliases ||= Hash[*@@locale_aliases.map{|k,v| [v.downcase,k]}.flatten]
+        @@reverse_aliases[$1.downcase] || $1 if $1
       end
 
       def prepend_locale?(locale)
@@ -64,6 +68,7 @@ module RoutingFilter
       end
 
       def prepend_locale!(url, locale)
+        locale = @@locale_aliases[locale] || locale
         url.sub!(%r(^(http.?://[^/]*)?(.*))) { "#{$1}/#{locale}#{$2}" }
       end
   end
