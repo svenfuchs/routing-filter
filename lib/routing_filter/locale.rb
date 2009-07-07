@@ -60,7 +60,7 @@ module RoutingFilter
       end
 
       def default_locale?(locale)
-        locale && locale.to_sym == I18n.default_locale
+        locale && locale.to_sym == I18n.default_locale.to_sym
       end
 
       def prepend_locale!(url, locale)
