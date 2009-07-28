@@ -51,7 +51,7 @@ ActionController::Routing::RouteSet.class_eval do
   end
 
   def recognize_path_with_filtering(path, env)
-    path = path.dup # string is frozen due to memoize
+    path = ::URI.unescape(path.dup) # string is frozen due to memoize
     filters.run :around_recognize, path, env, &lambda{ recognize_path_without_filtering(path, env) }
   end
   alias_method_chain :recognize_path, :filtering

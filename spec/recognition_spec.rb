@@ -68,4 +68,9 @@ describe 'RoutingFilter', 'url recognition' do
   it 'recognizes the path /en-US/sections/1/articles/1 and sets a :locale param' do
     should_recognize_path '/en-US/sections/1/articles/1', @article_params.update(:locale => 'en-US')
   end
+
+  it 'unescapes the path for the filters' do
+    @set.should_receive(:recognize_path_without_filtering).with('/sections/motörhead', 'test')
+    @set.recognize_path('/sections/mot%C3%B6rhead', 'test')
+  end
 end
