@@ -57,7 +57,7 @@ ActionController::Routing::RouteSet.class_eval do
   alias_method_chain :recognize_path, :filtering
 
   def generate_with_filtering(*args)
-    filters.run :around_generate, *args, &lambda{ generate_without_filtering(*args) }
+    filters.run :around_generate, args.first, &lambda{ generate_without_filtering(*args) }
   end
   alias_method_chain :generate, :filtering
 
