@@ -7,7 +7,7 @@ module RoutingFilter
     def initialize(*args)
       super
       @extension ||= 'html'
-      @exclude = %r(^/$) if @exclude.nil?
+      @exclude = %r(^(http.?://[^/]+)?\/?$) if @exclude.nil?
     end
 
     def around_recognize(path, env, &block)
