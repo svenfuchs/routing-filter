@@ -55,6 +55,10 @@ module RoutingFilterHelpers
     @controller.send :home_path, *args
   end
 
+  def home_url(*args)
+    @controller.send :home_url, *args
+  end
+
   def section_path(*args)
     @controller.send :section_path, *args
   end

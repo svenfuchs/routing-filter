@@ -46,6 +46,10 @@ describe 'RoutingFilter::ForceExtension' do
       home_path.should == '/'
     end
     
+    it 'excludes http://test.host/ by default' do
+      home_url.should == 'http://test.host/'
+    end
+    
     it 'excludes with custom regexp' do
       setup_environment { |map| map.filter :force_extension, :exclude => %r(^/(admin|$)) }
       home_path.should == '/'

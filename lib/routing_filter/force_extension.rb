@@ -34,7 +34,12 @@ module RoutingFilter
       end
       
       def excluded?(url)
-        exclude and url =~ exclude
+        case exclude
+        when Regexp
+          url =~ exclude
+        when Proc
+          exclude.call(url)
+        end
       end
       
       def mime_extension?(url)
