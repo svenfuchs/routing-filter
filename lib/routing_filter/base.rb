@@ -3,7 +3,7 @@ module RoutingFilter
     class_inheritable_accessor :active
     self.active = true
 
-    attr_accessor :successor, :options
+    attr_accessor :chain, :options
 
     def initialize(options = {})
       @options = options
@@ -11,8 +11,21 @@ module RoutingFilter
     end
 
     def run(method, *args, &block)
-      successor = @successor ? lambda { @successor.run(method, *args, &block) } : block
-      active ? send(method, *args, &successor) : successor.call(*args)
+      _next = successor ? lambda { successor.run(method, *args, &block) } : block
+      active ? send(method, *args, &_next) : _next.call(*args)
+    end
+
+    def run_reverse(method, *args, &block)
+      _prev = predecessor ? lambda { predecessor.run(method, *args, &block) } : block
+      active ? send(method, *args, &_prev) : _prev.call(*args)
+    end
+
+    def predecessor
+      @chain.predecessor(self)
+    end
+
+    def successor
+      @chain.successor(self)
     end
   end
 end

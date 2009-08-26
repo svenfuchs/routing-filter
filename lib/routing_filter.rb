@@ -4,12 +4,26 @@ module RoutingFilter
 
   class Chain < Array
     def << (filter)
-      filter.successor = last
+      filter.chain = self
       super
     end
 
     def run(method, *args, &final)
-      RoutingFilter.active && !last.nil? ? last.run(method, *args, &final) : final.call
+      RoutingFilter.active && !first.nil? ? first.run(method, *args, &final) : final.call
+    end
+
+    def run_reverse(method, *args, &final)
+      RoutingFilter.active && !last.nil? ? last.run_reverse(method, *args, &final) : final.call
+    end
+
+    def predecessor(filter)
+      ix = index(filter)
+      ix > 0 ? self[ix - 1] : nil
+    end
+
+    def successor(filter)
+      ix = index(filter)
+      ix < length - 1 ? self[ix + 1] : nil
     end
   end
 end
@@ -32,7 +46,7 @@ ActionController::Routing::RouteSet::NamedRouteCollection.class_eval do
       # returned string must not contain newlines, or we'll spill out of inline code comments in
       # ActionController::Routing::RouteSet::NamedRouteCollection#define_url_helper
       "returning(#{match[1]}) { |result|" +
-      "  ActionController::Routing::Routes.filters.run(:around_generate, *args, &lambda{ result }) " +
+      "  ActionController::Routing::Routes.filters.run_reverse(:around_generate, *args, &lambda{ result }) " +
       "} if #{match[2]}"
     end
   end
@@ -59,7 +73,7 @@ ActionController::Routing::RouteSet.class_eval do
   alias_method_chain :recognize_path, :filtering
 
   def generate_with_filtering(*args)
-    filters.run(:around_generate, args.first, &lambda{ generate_without_filtering(*args) })
+    filters.run_reverse(:around_generate, args.first, &lambda{ generate_without_filtering(*args) })
   end
   alias_method_chain :generate, :filtering
 
