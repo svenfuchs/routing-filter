@@ -4,9 +4,9 @@ class UuidTest < Test::Unit::TestCase
   attr_reader :routes, :uuid, :params
 
   def setup
-    @routes = draw_routes do |map|
-      map.filter :uuid
-      map.connect 'some/:id', :controller => 'some', :action => 'show'
+    @routes = draw_routes do
+      filter :uuid
+      match 'some/:id', :to => 'some#show'
     end
     @uuid   = 'd00fbbd1-82b6-4c1a-a57d-098d529d6854'
     @params = { :controller => 'some', :action => 'show', :id => '1', :uuid => uuid }

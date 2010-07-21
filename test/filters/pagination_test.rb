@@ -4,26 +4,26 @@ class PaginationTest < Test::Unit::TestCase
   attr_reader :routes, :params
 
   def setup
-    @routes = draw_routes do |map|
-      map.filter :pagination
-      map.connect 'products/:id', :controller => 'some', :action => 'index'
+    @routes = draw_routes do
+      filter :pagination
+      match 'some', :to => 'some#index'
     end
     @params = { :controller => 'some', :action => 'index', :page => 2 }
   end
 
-  test 'recognizes a path products/page/2' do
-    assert_equal params, routes.recognize_path('/products/page/2')
+  test 'recognizes a path some/page/2' do
+    assert_equal params, routes.recognize_path('/some/page/2')
   end
 
   test 'appends the segments /page/:page to the generated path if the passed :page param does not equal 1' do
-    assert_equal '/products/page/2', routes.generate(params)
+    assert_equal '/some/page/2', routes.generate(params)
   end
 
   test 'does not append anything to the generated path if the passed :page param equals 1' do
-    assert_equal '/products', routes.generate(params.merge(:page => 1))
+    assert_equal '/some', routes.generate(params.merge(:page => 1))
   end
 
   test 'appends the segments /page/:page to the generated path but respects url query params' do
-    assert_equal '/products/page/2?foo=bar', routes.generate(params.merge(:foo => 'bar'))
+    assert_equal '/some/page/2?foo=bar', routes.generate(params.merge(:foo => 'bar'))
   end
 end

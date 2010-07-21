@@ -43,8 +43,8 @@ The following would be a sceleton of an empty filter:
 
 You then have to specify the filter explicitely in your routes.rb:
 
-    ActionController::Routing::Routes.draw do |map|
-      map.filter 'awesomeness'
+    ActionController::Routing::Routes.draw
+      filter 'awesomeness'
     end
 
 (I am not sure if it makes sense to provide more technical information than
