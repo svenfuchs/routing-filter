@@ -1,4 +1,4 @@
-require 'active_support/core_ext/module/attribute_accessors'
+require 'action_pack'
 
 module RoutingFilter
   autoload :Base,           'routing_filter/base'
@@ -8,8 +8,15 @@ module RoutingFilter
   autoload :Pagination,     'routing_filter/filters/pagination'
   autoload :Uuid,           'routing_filter/filters/uuid'
 
-  mattr_accessor :active
-  @@active = true
+  class << self
+    def active=(active)
+      @@active = active
+    end
+
+    def active?
+      defined?(@@active) ? @@active : @@active = true
+    end
+  end
 end
 
-require 'routing_filter/rails'
+require 'routing_filter/adapters/rails_3'

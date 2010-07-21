@@ -6,11 +6,11 @@ module RoutingFilter
     end
     
     def run(method, *args, &final)
-      active? ? first.run(method, *args, &final) : final.call
+      RoutingFilter.active? ? first.run(method, *args, &final) : final.call
     end
 
     def run_reverse(method, *args, &final)
-      active? ? last.run_reverse(method, *args, &final) : final.call
+      RoutingFilter.active? ? last.run_reverse(method, *args, &final) : final.call
     end
     
     def active?
