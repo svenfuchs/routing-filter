@@ -1,0 +1,51 @@
+# The Pagination filter extracts segments matching /page/:page from the end of 
+# the recognized url and exposes the page parameter as params[:page]. When a
+# url is generated the filter adds the segments to the url accordingly if the
+# page parameter is passed to the url helper.
+# 
+#   incoming url: /products/page/1
+#   filtered url: /products
+#   params:       params[:page] = 1
+# 
+# You can install the filter like this:
+#
+#   # in config/routes.rb
+#   Rails.application.routes.draw do
+#     filter :pagination
+#   end
+#
+# To make your named_route helpers or url_for add the pagination segments you 
+# can use:
+#
+#   products_path(:page => 1)
+#   url_for(:products, :page => 1)
+
+module RoutingFilter
+  class Pagination < Base
+    def around_recognize(path, env, &block)
+      page = extract_page!(path)
+      yield(path, env).tap do |params|
+        params[:page] = page.to_i if page
+      end
+    end
+
+    def around_generate(*args, &block)
+      page = args.extract_options!.delete(:page)
+      yield.tap do |result|
+        append_page!(result, page) if page && page.to_i != 1
+      end
+    end
+
+    protected
+
+      def extract_page!(path)
+        path.sub! %r(/page/([\d]+)/?$), ''
+        $1
+      end
+
+      def append_page!(result, page)
+        url = result.is_a?(Array) ? result.first : result
+        url.sub!(/($|\?)/) { "/page/#{page}#{$1}" }
+      end
+  end
+end
