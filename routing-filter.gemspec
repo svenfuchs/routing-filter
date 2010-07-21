@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.authors      = ["Sven Fuchs"]
   s.email        = "svenfuchs@artweb-design.de"
   s.homepage     = "http://github.com/svenfuchs/routing_filter"
-  s.summary      = "routing-filter wraps around the complex beast that the Rails routing system is, allowing for unseen flexibility and power in Rails URL recognition and generation"
-  s.description  = "routing-filter wraps around the complex beast that the Rails routing system is, allowing for unseen flexibility and power in Rails URL recognition and generation."
+  s.summary      = "Routing filters wraps around the complex beast that the Rails routing system is, allowing for unseen flexibility and power in Rails URL recognition and generation"
+  s.description  = "Routing filters wraps around the complex beast that the Rails routing system is, allowing for unseen flexibility and power in Rails URL recognition and generation."
 
   s.files        = `git ls-files {app,lib}`.split("\n")
   s.platform     = Gem::Platform::RUBY
