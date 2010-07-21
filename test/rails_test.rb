@@ -1,7 +1,7 @@
 require File.expand_path('../test_helper', __FILE__)
 
 class RailsTest < Test::Unit::TestCase
-  class RoutingFilter::Test < Base
+  class RoutingFilter::Test < Filter
     def around_recognize(path, env, &block)
       'recognized'
     end

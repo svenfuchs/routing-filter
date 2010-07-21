@@ -2,7 +2,7 @@ require 'action_pack'
 require 'active_support/core_ext/string/inflections'
 
 module RoutingFilter
-  autoload :Base,       'routing_filter/base'
+  autoload :Filter,     'routing_filter/filter'
   autoload :Chain,      'routing_filter/chain'
   autoload :Extension,  'routing_filter/filters/extension'
   autoload :Locale,     'routing_filter/filters/locale'

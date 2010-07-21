@@ -20,7 +20,7 @@
 #   url_for(:products, :locale => 'de'))
 
 module RoutingFilter
-  class Extension < Base
+  class Extension < Filter
     attr_reader :extension, :exclude
 
     def initialize(*args)

@@ -21,7 +21,7 @@
 #   url_for(:products, :page => 1)
 
 module RoutingFilter
-  class Pagination < Base
+  class Pagination < Filter
     def around_recognize(path, env, &block)
       page = extract_page!(path)
       yield(path, env).tap do |params|

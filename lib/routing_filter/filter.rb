@@ -1,5 +1,5 @@
 module RoutingFilter
-  class Base
+  class Filter
     attr_accessor :next, :previous, :options
     
     def initialize(options = {})

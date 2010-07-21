@@ -23,7 +23,7 @@
 require 'i18n'
 
 module RoutingFilter
-  class Locale < Base
+  class Locale < Filter
     @@include_default_locale = true
     cattr_writer :include_default_locale
 

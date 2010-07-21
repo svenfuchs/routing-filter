@@ -3,7 +3,7 @@ require File.expand_path('../test_helper', __FILE__)
 include RoutingFilter
 
 class RoutingFilterTest < Test::Unit::TestCase
-  class FooFilter < Base
+  class FooFilter < Filter
     attr_reader :name
   
     def initialize(name)

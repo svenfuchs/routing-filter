@@ -20,7 +20,7 @@
 #   url_for(product, :uuid => uuid)
 
 module RoutingFilter
-  class Uuid < Base
+  class Uuid < Filter
     UUID_SEGMENT = %r(^/?([a-z\d]{8}\-[a-z\d]{4}\-[a-z\d]{4}\-[a-z\d]{4}\-[a-z\d]{12})/)
     
     def around_recognize(path, env, &block)
