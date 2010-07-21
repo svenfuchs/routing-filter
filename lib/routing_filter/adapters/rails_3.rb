@@ -1,4 +1,3 @@
-require 'action_pack'
 require 'action_dispatch'
 require 'active_support/core_ext/string/inflections'
 require 'active_support/core_ext/module/aliasing'
