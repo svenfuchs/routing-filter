@@ -11,7 +11,7 @@ class PaginationTest < Test::Unit::TestCase
     @params = { :controller => 'some', :action => 'index', :page => 2 }
   end
 
-  test 'recognizes a path some/page/2' do
+  test 'recognizes the path some/page/2' do
     assert_equal params, routes.recognize_path('/some/page/2')
   end
 

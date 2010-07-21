@@ -18,11 +18,11 @@ class LocaleTest < Test::Unit::TestCase
     end
   end
 
-  test 'recognizes a path en/products/1' do
+  test 'recognizes the path en/products/1' do
     assert_equal params.merge(:locale => 'en'), routes.recognize_path('/en/products/1')
   end
 
-  test 'recognizes a path de/products/1' do
+  test 'recognizes the path de/products/1' do
     assert_equal params.merge(:locale => 'de'), routes.recognize_path('/de/products/1')
   end
 

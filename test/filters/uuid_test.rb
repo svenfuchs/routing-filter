@@ -12,7 +12,7 @@ class UuidTest < Test::Unit::TestCase
     @params = { :controller => 'some', :action => 'show', :id => '1', :uuid => uuid }
   end
 
-  test 'recognizes a path :uuid/product/1' do
+  test 'recognizes the path :uuid/product/1' do
     assert_equal params, routes.recognize_path("/#{uuid}/some/1")
   end
 

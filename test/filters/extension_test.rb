@@ -13,7 +13,7 @@ class ForceExtensionTest < Test::Unit::TestCase
     @params = { :controller => 'some', :action => 'show', :id => '1' }
   end
 
-  test 'recognizes a path some/1.html and strips the extension' do
+  test 'recognizes the path some/1.html and strips the extension' do
     assert_nil routes.recognize_path('/some/1.html')[:format]
   end
 
