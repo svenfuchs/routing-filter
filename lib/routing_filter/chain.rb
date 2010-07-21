@@ -8,10 +8,6 @@ module RoutingFilter
     def run(method, *args, &final)
       RoutingFilter.active? ? first.run(method, *args, &final) : final.call
     end
-
-    def run_reverse(method, *args, &final)
-      RoutingFilter.active? ? last.run_reverse(method, *args, &final) : final.call
-    end
     
     def active?
       RoutingFilter.active && !empty?

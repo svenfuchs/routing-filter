@@ -41,13 +41,6 @@ class RoutingFilterTest < Test::Unit::TestCase
   
   test "chain.run calls the given method on registered filters in the given order" do
     log = []
-    chain.run(:foo, log, &lambda { log << 'finalizer' })
-    assert_equal %w(first second finalizer), log
-  end
-
-  test "chain.run_reverse calls the given method on registered filters in the reverse order" do
-    log = []
-    chain.run_reverse(:foo, log, &lambda { log << 'finalizer' })
-    assert_equal %w(second first finalizer), log
+    assert_equal %w(first second finalizer), chain.run(:foo, log, &lambda { log << 'finalizer' })
   end
 end
