@@ -5,7 +5,7 @@ class ForceExtensionTest < Test::Unit::TestCase
 
   def setup
     @routes = draw_routes do
-      filter :force_extension, :exclude => %r(^/(admin|$))
+      filter :extension, :exclude => %r(^/(admin|$))
       match '/',                  :to => 'some#index'
       match 'some/:id(.:format)', :to => 'some#show'
       match '/admin/some/new',    :to => 'some#new'

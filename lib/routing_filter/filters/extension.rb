@@ -1,4 +1,4 @@
-# The ForceExtension filter chops a file extension off from the end of the
+# The Extension filter chops a file extension off from the end of the
 # recognized path. When a path is generated the filter re-adds the extension 
 # to the path accordingly.
 # 
@@ -20,7 +20,7 @@
 #   url_for(:products, :locale => 'de'))
 
 module RoutingFilter
-  class ForceExtension < Base
+  class Extension < Base
     attr_reader :extension, :exclude
 
     def initialize(*args)
