@@ -2,8 +2,8 @@ require 'action_controller'
 
 # allows to install a filter to the route set by calling: map.filter 'locale'
 ActionController::Routing::RouteSet::Mapper.class_eval do
-  def filter(name, options = {})
-    @set.filters << RoutingFilter.const_get(name.to_s.camelize).new(options)
+  def filter(*args)
+    @set.add_filters(*args)
   end
 end
 
@@ -24,16 +24,15 @@ ActionController::Routing::RouteSet::NamedRouteCollection.class_eval do
 end
 
 ActionController::Routing::RouteSet.class_eval do
-  def clear_with_filtering!
-    @filters.clear if @filters
-    clear_without_filtering!
-  end
-  alias_method_chain :clear!, :filtering
-
   attr_writer :filters
 
   def filters
     @filters ||= RoutingFilter::Chain.new
+  end
+
+  def add_filters(*names)
+    options = names.extract_options!
+    names.each { |name| filters << RoutingFilter.build(name, options) }
   end
 
   def recognize_path_with_filtering(path, env = {})
@@ -46,6 +45,12 @@ ActionController::Routing::RouteSet.class_eval do
     filters.run_reverse(:around_generate, args.first, &lambda{ generate_without_filtering(*args) })
   end
   alias_method_chain :generate, :filtering
+
+  def clear_with_filtering!
+    @filters.clear if @filters
+    clear_without_filtering!
+  end
+  alias_method_chain :clear!, :filtering
 
   # add some useful information to the request environment
   # right, this is from jamis buck's excellent article about routes internals
