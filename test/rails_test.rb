@@ -14,11 +14,7 @@ class RailsTest < Test::Unit::TestCase
   attr_reader :routes
   
   def setup
-    @routes = draw_routes { filter :test }
-  end
-
-  def draw_routes(&block)
-    ActionDispatch::Routing::RouteSet.new.tap { |set| set.draw(&block) }
+    @routes = draw_routes { |set| set.filter :test }
   end
 
   test "routes.filter instantiates and registers a filter" do

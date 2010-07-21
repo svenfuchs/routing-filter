@@ -12,9 +12,9 @@ class LocaleTest < Test::Unit::TestCase
 
     @params = { :controller => 'some', :action => 'show', :id => '1' }
 
-    @routes = draw_routes do
-      filter :locale
-      match 'products/:id', :to => 'some#show'
+    @routes = draw_routes do |map|
+      map.filter :locale
+      map.connect 'products/:id', :controller => 'some', :action => 'show'
     end
   end
 

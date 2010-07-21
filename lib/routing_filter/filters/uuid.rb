@@ -40,7 +40,7 @@ module RoutingFilter
     protected
 
       def extract_uuid!(path)
-        path.sub!(UUID_SEGMENT, '')
+        path.sub!(UUID_SEGMENT, '/')
         $1
       end
 

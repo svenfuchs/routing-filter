@@ -4,20 +4,20 @@ class UuidTest < Test::Unit::TestCase
   attr_reader :routes, :uuid, :params
 
   def setup
-    @routes = draw_routes do
-      filter :uuid
-      match 'products/:id', :to => 'some#show'
+    @routes = draw_routes do |map|
+      map.filter :uuid
+      map.connect 'some/:id', :controller => 'some', :action => 'show'
     end
     @uuid   = 'd00fbbd1-82b6-4c1a-a57d-098d529d6854'
     @params = { :controller => 'some', :action => 'show', :id => '1', :uuid => uuid }
   end
 
   test 'recognizes a path :uuid/product/1' do
-    assert_equal params, routes.recognize_path("/#{uuid}/products/1")
+    assert_equal params, routes.recognize_path("/#{uuid}/some/1")
   end
 
   test 'prepends the :uuid segment to the generated path if passed as a param' do
-    assert_equal "/#{uuid}/products/1", routes.generate(params)
+    assert_equal "/#{uuid}/some/1", routes.generate(params)
   end
   
   test 'matches uuid segments' do

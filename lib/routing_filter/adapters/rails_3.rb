@@ -3,9 +3,11 @@ require 'active_support/core_ext/string/inflections'
 require 'active_support/core_ext/module/aliasing'
 require 'active_support/core_ext/hash/reverse_merge'
 
-ActionDispatch::Routing::Mapper.class_eval do
-  def filter(name, options = {})
-    @set.filters << RoutingFilter.const_get(name.to_s.camelize).new(options)
+[ActionDispatch::Routing::Mapper, ActionDispatch::Routing::DeprecatedMapper].each do |mapper|
+  mapper.class_eval do
+    def filter(name, options = {})
+      @set.filters << RoutingFilter.const_get(name.to_s.camelize).new(options)
+    end
   end
 end
 
@@ -15,6 +17,7 @@ ActionDispatch::Routing::RouteSet.class_eval do
   end
 
   def recognize_path_with_filtering(path, env = {})
+    # path = ::URI.unescape(path) # TODO
     filters.run(:around_recognize, path, env, &lambda{ recognize_path_without_filtering(path, env) })
   end
   alias_method_chain :recognize_path, :filtering

@@ -4,11 +4,11 @@ class ForceExtensionTest < Test::Unit::TestCase
   attr_reader :routes, :params
 
   def setup
-    @routes = draw_routes do
-      filter :force_extension, :exclude => %r(^/(admin|$))
-      match '/',                  :to => 'some#index'
-      match 'some/:id(.:format)', :to => 'some#show'
-      match '/admin/some/new',    :to => 'some#new'
+    @routes = draw_routes do |map|
+      map.filter :force_extension, :exclude => %r(^/(admin|$))
+      map.connect '/',                  :controller => 'some', :action => 'index'
+      map.connect 'some/:id.:format',   :controller => 'some', :action => 'show'
+      map.connect '/admin/some/new',    :controller => 'some', :action => 'new'
     end
     @params = { :controller => 'some', :action => 'show', :id => '1' }
   end
@@ -18,7 +18,7 @@ class ForceExtensionTest < Test::Unit::TestCase
   end
 
   test 'recognizes the path some/1.xml but does not strip the extension' do
-    assert 'xml', routes.recognize_path('some/1.xml')[:format]
+    assert 'xml', routes.recognize_path('/some/1.xml')[:format]
   end
 
   test 'appends the extension .html to the generated path' do

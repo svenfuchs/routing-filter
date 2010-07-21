@@ -1,9 +1,9 @@
+require 'action_controller'
+
 # allows to install a filter to the route set by calling: map.filter 'locale'
 ActionController::Routing::RouteSet::Mapper.class_eval do
   def filter(name, options = {})
-    require options.delete(:file) || "routing_filter/#{name}"
-    klass = RoutingFilter.const_get(name.to_s.camelize)
-    @set.filters << klass.new(options)
+    @set.filters << RoutingFilter.const_get(name.to_s.camelize).new(options)
   end
 end
 

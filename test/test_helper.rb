@@ -3,7 +3,11 @@ ENV['RAILS_ENV'] = 'test'
 $:.unshift File.expand_path('../../lib', __FILE__)
 
 require 'rubygems'
+
+# gem 'actionpack', '~> 2.3'
+
 require 'test/unit'
+require 'i18n'
 require 'action_pack'
 require 'active_support'
 require 'test_declarative'
@@ -13,7 +17,9 @@ include RoutingFilter
 
 class Test::Unit::TestCase
   def draw_routes(&block)
-    ActionDispatch::Routing::RouteSet.new.tap { |set| set.draw(&block) }
+    klass = ActionPack::VERSION::MAJOR == 2 ? 
+      ActionController::Routing::RouteSet : ActionDispatch::Routing::RouteSet
+    klass.new.tap { |set| set.draw(&block) }
   end
 end
 
