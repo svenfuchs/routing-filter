@@ -6,11 +6,11 @@ module RoutingFilter
     end
     
     def run(method, *args, &final)
-      RoutingFilter.active? ? first.run(method, *args, &final) : final.call
+      active? ? first.run(method, *args, &final) : final.call
     end
     
     def active?
-      RoutingFilter.active && !empty?
+      RoutingFilter.active? && !empty?
     end
   end
 end

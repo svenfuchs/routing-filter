@@ -21,8 +21,8 @@ ActionDispatch::Routing::RouteSet.class_eval do
   end
   alias_method_chain :recognize_path, :filtering
 
-  def generate_with_filtering(*args)
-    @set.filters.run(:around_generate, args.first, &lambda{ generate_without_filtering(*args) })
+  def generate_with_filtering(options, recall = {}, extras = false)
+    @set.filters.run(:around_generate, options, &lambda{ generate_without_filtering(options, recall, extras) })
   end
   alias_method_chain :generate, :filtering
 
@@ -38,7 +38,7 @@ require 'rack/mount/code_generation'
 
 Rack::Mount::RouteSet.class_eval do
   def filters
-    @filters ||= RoutingFilter::Chain.new
+    @filters || RoutingFilter::Chain.new.tap { |f| @filters = f unless frozen? }
   end
 end
 
@@ -56,12 +56,13 @@ Rack::Mount::CodeGeneration.class_eval do
   # note: if you overly and unnecessarily use blocks in your lowlevel libraries you make it fricking
   # hard for your users to hook in anywhere
   def recognize_with_filtering(request, &block)
-    route, matches, params = nil
-    filters.run(:around_recognize, request.env['PATH_INFO'], {}) do |path, env|
-      recognize_without_filtering(request) { |r, m, p| route, matches, params = r, m, p }
-      params
+    path, route, matches, params = request.env['PATH_INFO'], nil, nil, nil
+    filters.run(:around_recognize, path, {}) do
+      path.replace('/') if path.empty?
+      route, matches, params = recognize_without_filtering(request)
+      params || {}
     end
-    block.call(route, matches, params)
+    block.call(route, matches, params) if route
   end
 end
 

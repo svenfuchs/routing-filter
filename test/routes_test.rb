@@ -1,6 +1,6 @@
 require File.expand_path('../test_helper', __FILE__)
 
-class RailsTest < Test::Unit::TestCase
+class RoutesTest < Test::Unit::TestCase
   class RoutingFilter::Test < Filter
     def around_recognize(path, env, &block)
       'recognized'
@@ -26,6 +26,6 @@ class RailsTest < Test::Unit::TestCase
   end
   
   test "filter.around_generate is being called" do
-    assert_equal 'generated', routes.generate
+    assert_equal 'generated', routes.generate({})
   end
 end

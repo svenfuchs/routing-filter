@@ -21,32 +21,20 @@
 
 module RoutingFilter
   class Uuid < Filter
-    UUID_SEGMENT = %r(^/?([a-z\d]{8}\-[a-z\d]{4}\-[a-z\d]{4}\-[a-z\d]{4}\-[a-z\d]{12})/)
+    UUID_SEGMENT = %r(^/?([a-z\d]{8}\-[a-z\d]{4}\-[a-z\d]{4}\-[a-z\d]{4}\-[a-z\d]{12})/?)
     
     def around_recognize(path, env, &block)
-      uuid = extract_uuid!(path)
+      uuid = extract_segment!(UUID_SEGMENT, path)
       yield.tap do |params|
         params[:uuid] = uuid if uuid
       end
     end
 
-    def around_generate(*args, &block)
-      uuid = args.extract_options!.delete(:uuid)
+    def around_generate(params, &block)
+      uuid = params.delete(:uuid)
       yield.tap do |result|
-        prepend_uuid!(result, uuid) if uuid
+        prepend_segment!(result, uuid) if uuid
       end
     end
-
-    protected
-
-      def extract_uuid!(path)
-        path.sub!(UUID_SEGMENT, '/')
-        $1
-      end
-
-      def prepend_uuid!(result, uuid)
-        url = result.is_a?(Array) ? result.first : result
-        url.sub!(%r(^(http.?://[^/]*)?(.*))) { "#{$1}/#{uuid}#{$2}" }
-      end
   end
 end
