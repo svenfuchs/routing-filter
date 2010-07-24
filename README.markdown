@@ -17,16 +17,34 @@ implement custom ones. Maybe the most popular one is the Locale routing filter:
 * `Uuid` - prepends a uuid for authentication or other purposes (e.g. /d00fbbd1-82b6-4c1a-a57d-098d529d6854/products/1)
 * `Extension` - appends an extension (e.g. /products.html)
 
+## Requirements
+
+routing-filter currently only works with Rails. It should not be all too hard
+to get it working with plain Rack::Mount but I haven't had that usecase, yet.
+
+## Installation
+
+The Gem should work out of the box for Rails 3 after specifying it in your
+application's Gemfile.
+
+  # Gemfile
+  gem 'routing-filter'
+
+In order to use it with Rails 2.x you could specify it in your environment.rb
+
+  # config/environment.rb
+  gem 'routing-filter'
+
 ## Usage
 
-You can setup the filters like this:
+Once the Gem has loaded you can setup the filters in your routes file like this:
 
     # in config/routes.rb
     Rails.application.routes.draw do
       filter :pagination, :uuid
     end
 
-Filters can also accept options like this:
+Filters can also accept options:
 
     Rails.application.routes.draw do
       filter :extension, :exclude => %r(^admin/)
@@ -34,8 +52,8 @@ Filters can also accept options like this:
 
 ## Implementing your own filters
 
-Check out the existing filters in "lib/routing_filter/filters":http://github.com/svenfuchs/routing-filter/tree/master/lib/routing_filter/filters
-for examples.
+For example implementations have a look at the existing filters in
+"lib/routing_filter/filters":http://github.com/svenfuchs/routing-filter/tree/master/lib/routing_filter/filters.
 
 The following would be a sceleton of an empty filter:
 
@@ -64,10 +82,10 @@ The following would be a sceleton of an empty filter:
       end
     end
 
-You then have to specify the filter explicitely in your routes.rb:
+You can specify the filter explicitely in your routes.rb:
 
-    ActionController::Routing::Routes.draw
-      filter 'awesomeness'
+    Rails.application.routes.draw do
+      filter :awesomeness
     end
 
 (I am not sure if it makes sense to provide more technical information than
