@@ -53,8 +53,15 @@ Rack::Mount::CodeGeneration.class_eval do
   alias :optimize_recognize_without_filtering! :optimize_recognize!
   alias :optimize_recognize! :optimize_recognize_with_filtering!
 
+  # note: if you overly and unnecessarily use blocks in your lowlevel libraries you make it fricking
+  # hard for your users to hook in anywhere
   def recognize_with_filtering(request, &block)
-    filters.run(:around_recognize, request.env['PATH_INFO'], {}, &lambda{ recognize_without_filtering(request, &block) })
+    route, matches, params = nil
+    filters.run(:around_recognize, request.env['PATH_INFO'], {}) do |path, env|
+      recognize_without_filtering(request) { |r, m, p| route, matches, params = r, m, p }
+      params
+    end
+    block.call(route, matches, params)
   end
 end
 
