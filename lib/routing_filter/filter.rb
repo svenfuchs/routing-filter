@@ -19,7 +19,8 @@ module RoutingFilter
     protected
 
       def extract_segment!(pattern, path)
-        path.sub!(pattern, '')
+        path.sub!(pattern) { $2 || '' }
+        path.replace('/') if path.empty?
         $1
       end
 

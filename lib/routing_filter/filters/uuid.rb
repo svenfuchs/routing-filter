@@ -21,7 +21,7 @@
 
 module RoutingFilter
   class Uuid < Filter
-    UUID_SEGMENT = %r(^/?([a-z\d]{8}\-[a-z\d]{4}\-[a-z\d]{4}\-[a-z\d]{4}\-[a-z\d]{12})/?)
+    UUID_SEGMENT = %r(^/?([a-z\d]{8}\-[a-z\d]{4}\-[a-z\d]{4}\-[a-z\d]{4}\-[a-z\d]{12})(/)?)
     
     def around_recognize(path, env, &block)
       uuid = extract_segment!(UUID_SEGMENT, path)

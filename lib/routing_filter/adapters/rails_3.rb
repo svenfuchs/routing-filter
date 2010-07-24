@@ -58,7 +58,6 @@ Rack::Mount::CodeGeneration.class_eval do
   def recognize_with_filtering(request, &block)
     path, route, matches, params = request.env['PATH_INFO'], nil, nil, nil
     filters.run(:around_recognize, path, {}) do
-      path.replace('/') if path.empty?
       route, matches, params = recognize_without_filtering(request)
       params || {}
     end
