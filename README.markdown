@@ -1,4 +1,4 @@
-## Routing Filter
+# Routing Filter
 
 Routing filters wrap around the complex beast that the Rails routing system is
 to allow for unseen flexibility and power in Rails URL recognition and
@@ -57,13 +57,13 @@ Filters can also accept options:
 ## Implementing your own filters
 
 For example implementations have a look at the existing filters in
-"lib/routing_filter/filters":http://github.com/svenfuchs/routing-filter/tree/master/lib/routing_filter/filters.
+[lib/routing_filter/filters](http://github.com/svenfuchs/routing-filter/tree/master/lib/routing_filter/filters)
 
 The following would be a sceleton of an empty filter:
 
     module RoutingFilter
       class Awesomeness < Filter
-        def around_recognize(route, path, env)
+        def around_recognize(path, env, &block)
           # Alter the path here before it gets recognized.
           # Make sure to yield (calls the next around filter if present and
           # eventually `recognize_path` on the routeset):
@@ -73,7 +73,7 @@ The following would be a sceleton of an empty filter:
           end
         end
 
-        def around_generate(controller, *args, &block)
+        def around_generate(params, &block)
           # Alter arguments here before they are passed to `url_for`.
           # Make sure to yield (calls the next around filter if present and
           # eventually `url_for` on the controller):
@@ -103,6 +103,8 @@ If I'm mistaken on this please drop me an email with your suggestions.)
 
 ## Rationale: Two example usecases
 
+### Conditionally prepending the locale
+
 An early usecase from which this originated was the need to define a locale
 at the beginning of an URL in a way so that
 
@@ -116,7 +118,9 @@ You can read about this struggle and two possible, yet unsatisfying solutions
 The conclusion so far is that Rails itself does not provide the tools to solve
 this problem in a clean and dry way.
 
-Another usecase that eventually spawned the manifestation of this plugin was
+### Expanding /sections/:id to nested tree segments
+
+Another usecase that eventually spawned the implementation of this plugin was
 the need to map an arbitrary count of path segments to a certain model
 instance. In an application that I've been working on recently I needed to
 map URL paths to a nested tree of models like so:

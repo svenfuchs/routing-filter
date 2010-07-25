@@ -34,7 +34,7 @@ module RoutingFilter
       yield(path, env)
     end
 
-    def around_generate(*args, &block)
+    def around_generate(params, &block)
       yield.tap do |result|
         url = result.is_a?(Array) ? result.first : result
         append_extension!(url) if append_extension?(url)
