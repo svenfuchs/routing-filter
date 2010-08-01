@@ -57,7 +57,7 @@ Rack::Mount::CodeGeneration.class_eval do
   # hard for your users to hook in anywhere
   def recognize_with_filtering(request, &block)
     path, route, matches, params = request.env['PATH_INFO'], nil, nil, nil
-    filters.run(:around_recognize, path, {}) do
+    filters.run(:around_recognize, path, request.env) do
       route, matches, params = recognize_without_filtering(request)
       params || {}
     end
