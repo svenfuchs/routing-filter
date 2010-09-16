@@ -52,7 +52,7 @@ module RoutingFilter
       end
     end
 
-    def around_generate(params, &block)
+    def around_generate(params = {}, &block)
       locale = params.delete(:locale)                             # extract the passed :locale option
       locale = I18n.locale if locale.nil?                         # default to I18n.locale when locale is nil (could also be false)
       locale = nil unless valid_locale?(locale)                   # reset to no locale when locale is not valid
