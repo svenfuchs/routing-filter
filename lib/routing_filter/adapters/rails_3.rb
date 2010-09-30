@@ -16,10 +16,10 @@ ActionDispatch::Routing::RouteSet.class_eval do
     names.each { |name| @set.filters << RoutingFilter.build(name, options) }
   end
 
-  def recognize_path_with_filtering(path, env = {})
-    @set.filters.run(:around_recognize, path, env, &lambda{ recognize_path_without_filtering(path, env) })
-  end
-  alias_method_chain :recognize_path, :filtering
+  # def recognize_path_with_filtering(path, env = {})
+  #   @set.filters.run(:around_recognize, path.dup, env, &lambda{ recognize_path_without_filtering(path.dup, env) })
+  # end
+  # alias_method_chain :recognize_path, :filtering
 
   def generate_with_filtering(options, recall = {}, extras = false)
     @set.filters.run(:around_generate, options, &lambda{ generate_without_filtering(options, recall, extras) })
@@ -57,10 +57,14 @@ Rack::Mount::CodeGeneration.class_eval do
   # hard for your users to hook in anywhere
   def recognize_with_filtering(request, &block)
     path, route, matches, params = request.env['PATH_INFO'], nil, nil, nil
+    original_path = path.dup
+
     filters.run(:around_recognize, path, request.env) do
       route, matches, params = recognize_without_filtering(request)
       params || {}
     end
+
+    request.env['PATH_INFO'] = original_path # hmm ...
     block.call(route, matches, params) if route
   end
 end
