@@ -10,9 +10,9 @@ class RoutesTest < Test::Unit::TestCase
       'generated'
     end
   end
-  
+
   attr_reader :routes
-  
+
   def setup
     @routes = draw_routes { |set| set.filter :test }
   end
@@ -20,11 +20,11 @@ class RoutesTest < Test::Unit::TestCase
   test "routes.filter instantiates and registers a filter" do
     assert routes.instance_variable_get(:@set).filters.first.is_a?(RoutingFilter::Test)
   end
-  
-  test "filter.around_recognize is being called" do
-    assert_equal 'recognized', routes.recognize_path('/')
-  end
-  
+
+  # test "filter.around_recognize is being called" do
+  #   assert_equal 'recognized', routes.recognize_path('/')
+  # end
+
   test "filter.around_generate is being called" do
     assert_equal 'generated', routes.generate({})
   end
