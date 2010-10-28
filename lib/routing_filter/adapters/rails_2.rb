@@ -32,7 +32,7 @@ ActionController::Routing::RouteSet.class_eval do
 
   def add_filters(*names)
     options = names.extract_options!
-    names.each { |name| filters << RoutingFilter.build(name, options) }
+    names.each { |name| filters.unshift(RoutingFilter.build(name, options)) }
   end
 
   def recognize_path_with_filtering(path, env = {})

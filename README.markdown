@@ -54,6 +54,19 @@ Filters can also accept options:
       filter :extension, :exclude => %r(^admin/)
     end
 
+## Filter order
+
+You can picture the way routing-filter wraps filters around your application as a russian puppet pattern. Your application sits in the center and is wrapped by a number of filters. An incoming request's path will be past through these layers of filters from the outside in until it is passed to the regular application routes set. When you generate URLs on the other hand then the filters will be run from the inside out.
+
+Filter order might be confusing at first. The reason for that is that the way rack/mount (which is used by Rails as a core routing engine) is confusing in this respect and Rails tries to make the best of it.
+
+Suppose you have a filter :custom in your application routes.rb file and an engine that adds a :common filter. Then Rails makes it so that your application's routes file will be loaded first (basically route.rb files are loaded in reverse engine load order).
+
+Thus routing-filter will make your :custom filter the *inner-most* filter, wrapping the application *first*. The :common filter from your engine will be wrapped *around* that onion and will be made the *outer-most* filter.
+
+This way common base filters (such as the locale filter) can run first and do not need to know about the specifics of other (more specialized, custom) filters. Custom filters on the other hand can easily take into account that common filters might already have run and adjust accordingly.
+
+
 ## Implementing your own filters
 
 For example implementations have a look at the existing filters in
