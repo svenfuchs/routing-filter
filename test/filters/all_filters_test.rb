@@ -16,10 +16,10 @@ class AllFiltersTest < Test::Unit::TestCase
     @uuid   = 'd00fbbd1-82b6-4c1a-a57d-098d529d6854'
 
     @routes = draw_routes do
-      filter :extension, :locale, :pagination, :uuid
+      filter :uuid, :pagination ,:locale, :extension
       match 'some', :to => 'some#index'
     end
   end
-  
+
   include Recognition, Generation
 end

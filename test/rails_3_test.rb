@@ -15,7 +15,7 @@ if ActionPack::VERSION::MAJOR == 3
       app.config.active_support.deprecation = :log
       app.routes.draw do
         match "/" => "rails3_test/tests#index"
-        filter :extension, :locale, :pagination, :uuid
+        filter :uuid, :pagination ,:locale, :extension
       end
       app.initialize!
     end
