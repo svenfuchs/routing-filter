@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.summary      = "Routing filters wraps around the complex beast that the Rails routing system is, allowing for unseen flexibility and power in Rails URL recognition and generation"
   s.description  = "Routing filters wraps around the complex beast that the Rails routing system is, allowing for unseen flexibility and power in Rails URL recognition and generation."
 
-  s.files        = `git ls-files {app,lib}`.split("\n")
+  s.files        = Dir.glob("lib/**/**")
   s.platform     = Gem::Platform::RUBY
   s.require_path = 'lib'
   s.rubyforge_project = '[none]'
