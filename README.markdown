@@ -17,6 +17,11 @@ implement custom ones. Maybe the most popular one is the Locale routing filter:
 * `Uuid` - prepends a uuid for authentication or other purposes (e.g. /d00fbbd1-82b6-4c1a-a57d-098d529d6854/products/1)
 * `Extension` - appends an extension (e.g. /products.html)
 
+Please note that Rails 3's routing system is much more powerful and flexible
+than Rails 2 was. There are many usecases that now can be covered with just
+Rails 3 default routing features that weren't doable in Rails 2. For an example
+of a quite complex and flexible route see this [gist by Andrew White](http://gist.github.com/653543)
+
 ## Requirements
 
 routing-filter currently only works with Rails. It should not be all too hard
