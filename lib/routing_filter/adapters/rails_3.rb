@@ -2,7 +2,9 @@ require 'action_dispatch'
 require 'active_support/core_ext/module/aliasing'
 require 'active_support/core_ext/hash/reverse_merge'
 
-[ActionDispatch::Routing::Mapper, ActionDispatch::Routing::DeprecatedMapper].each do |mapper|
+mappers = [ActionDispatch::Routing::Mapper]
+mappers << ActionDispatch::Routing::DeprecatedMapper if defined?(ActionDispatch::Routing::DeprecatedMapper)
+mappers.each do |mapper|
   mapper.class_eval do
     def filter(*args)
       @set.add_filters(*args)
