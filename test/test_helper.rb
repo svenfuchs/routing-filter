@@ -1,7 +1,5 @@
 ENV['RAILS_ENV'] = 'test'
 
-$:.unshift File.expand_path('../../lib', __FILE__)
-
 require 'rubygems'
 # gem 'actionpack', '~> 2.3' if ENV['RAILS_2']
 require 'test/unit'

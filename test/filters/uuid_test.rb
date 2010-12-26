@@ -1,4 +1,4 @@
-require File.expand_path('../../test_helper', __FILE__)
+require 'test_helper'
 
 class UuidTest < Test::Unit::TestCase
   attr_reader :routes, :uuid, :params
@@ -19,7 +19,7 @@ class UuidTest < Test::Unit::TestCase
   test 'prepends the :uuid segment to the generated path if passed as a param' do
     assert_equal "/#{uuid}/some/1", routes.generate(params)
   end
-  
+
   test 'matches uuid segments' do
     pattern = Uuid::UUID_SEGMENT
     uuids = %w(
@@ -28,7 +28,7 @@ class UuidTest < Test::Unit::TestCase
     )
     uuids.each { |uuid| assert pattern.match("/#{uuid}/"), "does not match /#{uuid}/ but should" }
   end
-  
+
   test 'does not match non-uuid segments' do
     pattern = Uuid::UUID_SEGMENT
     uuids = %w(

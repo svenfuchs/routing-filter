@@ -1,4 +1,4 @@
-require File.expand_path('../../test_helper', __FILE__)
+require 'test_helper'
 
 class PaginationTest < Test::Unit::TestCase
   attr_reader :routes, :params

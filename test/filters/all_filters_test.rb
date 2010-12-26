@@ -1,6 +1,6 @@
-require File.expand_path('../../test_helper', __FILE__)
-require File.expand_path('../all_filters/generation', __FILE__)
-require File.expand_path('../all_filters/recognition', __FILE__)
+require 'test_helper'
+require 'filters/all_filters/generation'
+require 'filters/all_filters/recognition'
 
 class AllFiltersTest < Test::Unit::TestCase
   attr_reader :routes, :params, :uuid
