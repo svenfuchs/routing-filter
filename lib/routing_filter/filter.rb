@@ -7,7 +7,7 @@ module RoutingFilter
     end
 
     def run(method, *args, &block)
-      _next = self.next ? lambda { self.next.run(method, *args, &block) } : block
+      _next = self.next ? proc {|path, env| self.next.run(method, *args, &block) } : block
       RoutingFilter.active? ? send(method, *args, &_next) : _next.call(*args)
     end
 
