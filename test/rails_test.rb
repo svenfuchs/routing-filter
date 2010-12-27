@@ -21,7 +21,7 @@ class RailsTest < Test::Unit::TestCase
   end
 
   def params
-    response.status == 200 ? eval(response.body).symbolize_keys : {}
+    response.status.to_s.include?('200') ? eval(response.body).symbolize_keys : {}
   end
 
   test "get to /" do

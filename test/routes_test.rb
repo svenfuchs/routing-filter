@@ -18,7 +18,7 @@ class RoutesTest < Test::Unit::TestCase
   end
 
   test "routes.filter instantiates and registers a filter" do
-    assert routes.instance_variable_get(:@set).filters.first.is_a?(RoutingFilter::Test)
+    assert routes.filters.first.is_a?(RoutingFilter::Test)
   end
 
   # test "filter.around_recognize is being called" do

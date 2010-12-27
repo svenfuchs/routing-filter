@@ -13,9 +13,13 @@ mappers.each do |mapper|
 end
 
 ActionDispatch::Routing::RouteSet.class_eval do
+  def filters
+    @set.filters if @set
+  end
+
   def add_filters(*names)
     options = names.extract_options!
-    names.each { |name| @set.filters.unshift(RoutingFilter.build(name, options)) }
+    names.each { |name| filters.unshift(RoutingFilter.build(name, options)) }
   end
 
   # def recognize_path_with_filtering(path, env = {})
@@ -24,12 +28,12 @@ ActionDispatch::Routing::RouteSet.class_eval do
   # alias_method_chain :recognize_path, :filtering
 
   def generate_with_filtering(options, recall = {}, extras = false)
-    @set.filters.run(:around_generate, options, &lambda{ generate_without_filtering(options, recall, extras) })
+    filters.run(:around_generate, options, &lambda{ generate_without_filtering(options, recall, extras) })
   end
   alias_method_chain :generate, :filtering
 
   def clear_with_filtering!
-    @set.filters.clear if @set
+    filters.clear if filters
     clear_without_filtering!
   end
   alias_method_chain :clear!, :filtering
