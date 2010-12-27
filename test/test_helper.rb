@@ -1,7 +1,6 @@
 ENV['RAILS_ENV'] = 'test'
 
 require 'rubygems'
-# gem 'actionpack', '~> 2.3' if ENV['RAILS_2']
 require 'test/unit'
 require 'bundler/setup'
 

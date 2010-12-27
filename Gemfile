@@ -1,2 +1,1 @@
-source :rubygems
-gemspec
+ci/Gemfile.rails-3.x

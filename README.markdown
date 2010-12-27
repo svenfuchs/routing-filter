@@ -59,6 +59,20 @@ Filters can also accept options:
       filter :extension, :exclude => %r(^admin/)
     end
 
+## Running the tests
+
+There are two Gemfiles in the `ci` directory in order to run the tests against different dependencies. The Rails 3 Gemfile is symlinked to the root folder, so it will be used by default.
+
+Running the tests with Rails 3.x:
+
+    $ bundle install
+    $ ruby -Itest -Ilib test/all.rb
+
+Running the tests with Rails 2.3.x:
+
+    $ BUNDLE_GEMFILE=ci/Gemfile.rails-2.3.x bundle install
+    $ BUNDLE_GEMFILE=ci/Gemfile.rails-2.3.x ruby -Itest -Ilib test/all.rb
+
 ## Filter order
 
 You can picture the way routing-filter wraps filters around your application as a russian puppet pattern. Your application sits in the center and is wrapped by a number of filters. An incoming request's path will be past through these layers of filters from the outside in until it is passed to the regular application routes set. When you generate URLs on the other hand then the filters will be run from the inside out.
