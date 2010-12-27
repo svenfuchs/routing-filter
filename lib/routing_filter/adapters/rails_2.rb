@@ -58,7 +58,7 @@ ActionController::Routing::RouteSet.class_eval do
   # TODO move this ... where?
   alias_method :extract_request_environment_without_host, :extract_request_environment unless method_defined? :extract_request_environment_without_host
   def extract_request_environment(request)
-    returning extract_request_environment_without_host(request) do |env|
+    extract_request_environment_without_host(request).tap do |env|
       env.merge! :host => request.host,
                  :port => request.port,
                  :host_with_port => request.host_with_port,
