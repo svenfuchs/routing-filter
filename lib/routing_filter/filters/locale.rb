@@ -45,6 +45,13 @@ module RoutingFilter
       end
     end
 
+    attr_reader :exclude
+
+    def initialize(*args)
+      super
+      @exclude = options[:exclude]
+    end
+
     def around_recognize(path, env, &block)
       locale = extract_segment!(self.class.locales_pattern, path) # remove the locale from the beginning of the path
       yield.tap do |params|                                       # invoke the given block (calls more filters and finally routing)
@@ -62,7 +69,8 @@ module RoutingFilter
       args << params
 
       yield.tap do |result|
-        prepend_segment!(result, locale) if prepend_locale?(locale)
+        url = result.is_a?(Array) ? result.first : result
+        prepend_segment!(result, locale) if prepend_locale?(locale) && !excluded?(url)
       end
     end
 
@@ -78,6 +86,15 @@ module RoutingFilter
 
       def prepend_locale?(locale)
         locale && (self.class.include_default_locale? || !default_locale?(locale))
+      end
+
+      def excluded?(url)
+        case exclude
+        when Regexp
+          url =~ exclude
+        when Proc
+          exclude.call(url)
+        end
       end
   end
 end
