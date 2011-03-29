@@ -15,7 +15,7 @@ ActionController::Routing::RouteSet::NamedRouteCollection.class_eval do
     if match = code.match(%r(^return (.*) if (.*)))
       # returned string must not contain newlines, or we'll spill out of inline code comments in
       # ActionController::Routing::RouteSet::NamedRouteCollection#define_url_helper
-      "returning(#{match[1]}) { |result|" +
+      "#{match[1]}.tap { |result|" +
       "  ActionController::Routing::Routes.filters.run(:around_generate, *args, &lambda{ result }) " +
       "} if #{match[2]}"
     end
