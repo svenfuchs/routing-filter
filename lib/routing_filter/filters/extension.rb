@@ -2,22 +2,16 @@
 # recognized path. When a path is generated the filter re-adds the extension 
 # to the path accordingly.
 # 
-#   incoming url: /de/products/page/1
-#   filtered url: /de/products
-#   params:       params[:locale] = 'de'
+#   incoming url: /products.xml
+#   filtered url: /products
+#   generated url: /products.xml
 # 
 # You can install the filter like this:
 #
 #   # in config/routes.rb
 #   Rails.application.routes.draw do
-#     filter :locale
+#     filter :extension
 #   end
-#
-# To make your named_route helpers or url_for add the pagination segments you 
-# can use:
-#
-#   products_path(:locale => 'de')
-#   url_for(:products, :locale => 'de'))
 
 module RoutingFilter
   class Extension < Filter

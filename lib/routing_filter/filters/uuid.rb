@@ -3,8 +3,8 @@
 # the filter adds the segments to the path accordingly if the page parameter is
 # passed to the url helper.
 #
-#   incoming url: /d00fbbd1-82b6-4c1a-a57d-098d529d6854/product/1
-#   filtered url: /product/1
+#   incoming url: /d00fbbd1-82b6-4c1a-a57d-098d529d6854/products
+#   filtered url: /products
 #   params:       params[:uuid] = 'd00fbbd1-82b6-4c1a-a57d-098d529d6854'
 #
 # You can install the filter like this:
@@ -16,8 +16,8 @@
 #
 # To make your named_route helpers or url_for add the uuid segment you can use:
 #
-#   product_path(:uuid => uuid)
-#   url_for(product, :uuid => uuid)
+#   products_path(:uuid => uuid)
+#   url_for(:products, :uuid => uuid)
 
 module RoutingFilter
   class Uuid < Filter
