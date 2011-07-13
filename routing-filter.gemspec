@@ -15,9 +15,9 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.rubyforge_project = '[none]'
 
-  s.add_dependency 'actionpack'
+  s.add_dependency 'actionpack', '>= 0'
 
-  s.add_development_dependency 'i18n'
-  s.add_development_dependency 'rails'
-  s.add_development_dependency 'test_declarative'
+  s.add_development_dependency 'i18n', '>= 0'
+  s.add_development_dependency 'rails', '>= 0'
+  s.add_development_dependency 'test_declarative', '>= 0'
 end
