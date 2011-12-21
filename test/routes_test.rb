@@ -14,7 +14,11 @@ class RoutesTest < Test::Unit::TestCase
   attr_reader :routes
 
   def setup
-    @routes = draw_routes { |set| set.filter :test }
+    @routes = if rails_2? 
+                draw_routes { |set| set.filter :test } 
+              else 
+                draw_routes { filter :test } 
+              end
   end
 
   test "routes.filter instantiates and registers a filter" do
