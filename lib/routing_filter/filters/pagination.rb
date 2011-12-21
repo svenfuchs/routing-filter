@@ -26,7 +26,7 @@ module RoutingFilter
 
     def around_recognize(path, env, &block)
       page = extract_segment!(PAGINATION_SEGMENT, path)
-      yield(path, env).tap do |params|
+      yield.tap do |params|
         params[:page] = page.to_i if page
       end
     end
