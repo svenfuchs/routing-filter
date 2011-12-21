@@ -2,20 +2,12 @@ require 'test_helper'
 require "test_adapters/rails_#{ActionPack::VERSION::MAJOR}"
 
 class RailsTest < Test::Unit::TestCase
-  include Rack::Test::Methods
+  include TestRailsAdapter::RackTestHelper
 
   I18n.available_locales = [:en, :de]
 
-  def app
-    TestRailsAdapter::Application
-  end
-
   def params
     response.status.to_s.include?('200') ? eval(response.body).symbolize_keys : {}
-  end
-
-  def response
-    last_response
   end
 
   test "get to /" do
