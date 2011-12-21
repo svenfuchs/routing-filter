@@ -71,7 +71,13 @@ Rack::Mount::CodeGeneration.class_eval do
     end
 
     request.env['PATH_INFO'] = original_path # hmm ...
-    block.call(route, matches, params) if route
+    return nil unless route
+
+    if block
+      return block.call(route, matches, params)
+    else
+      return route, matches, params
+    end
   end
 end
 
