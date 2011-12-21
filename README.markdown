@@ -61,17 +61,19 @@ Filters can also accept options:
 
 ## Running the tests
 
-There are two Gemfiles in the `ci` directory in order to run the tests against different dependencies. The Rails 3 Gemfile is symlinked to the root folder, so it will be used by default.
+To run the tests against different dependencies [appraisal](https://github.com/thoughtbot/appraisal) is used.
 
-Running the tests with Rails 3.x:
+Running the tests for all supported Rails versions:
 
     $ bundle install
-    $ ruby -Itest -Ilib test/all.rb
+    $ bundle exec rake all
 
-Running the tests with Rails 2.3.x:
+Running the tests for a single version, for example Rails 3.1:
 
-    $ BUNDLE_GEMFILE=ci/Gemfile.rails-2.3.x bundle install
-    $ BUNDLE_GEMFILE=ci/Gemfile.rails-2.3.x ruby -Itest -Ilib test/all.rb
+    $ bundle install
+    $ bundle exec rake appraisal:rails-3.1 test
+
+Valid appraisal targets include rails-2.3, rails-3.0, rails-3.1 and rails-3.2
 
 ## Filter order
 

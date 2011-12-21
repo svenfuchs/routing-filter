@@ -16,14 +16,14 @@ class PaginationTest < Test::Unit::TestCase
   end
 
   test 'appends the segments /page/:page to the generated path if the passed :page param does not equal 1' do
-    assert_equal '/some/page/2', routes.generate(params)
+    assert_generates '/some/page/2', routes.generate(params)
   end
 
   test 'does not append anything to the generated path if the passed :page param equals 1' do
-    assert_equal '/some', routes.generate(params.merge(:page => 1))
+    assert_generates '/some', routes.generate(params.merge(:page => 1))
   end
 
   test 'appends the segments /page/:page to the generated path but respects url query params' do
-    assert_equal '/some/page/2?foo=bar', routes.generate(params.merge(:foo => 'bar'))
+    assert_generates '/some/page/2?foo=bar', routes.generate(params.merge(:foo => 'bar'))
   end
 end
