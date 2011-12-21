@@ -2,23 +2,9 @@ require 'test_helper'
 require "test_adapters/rails_#{ActionPack::VERSION::MAJOR}"
 
 class RailsTest < Test::Unit::TestCase
-  include TestRailsAdapter
+  include TestRailsAdapter::RackTestHelper
 
   I18n.available_locales = [:en, :de]
-
-  class TestsController < ActionController::Base
-    include Rails.application.routes.url_helpers if defined?(Rails)
-
-    def index
-      url = url_for(params.merge(:only_path => true))
-      render :text => params.merge(:url => url).inspect
-    end
-
-    def show
-      url = foo_path(params)
-      render :text => params.merge(:url => url).inspect
-    end
-  end
 
   def params
     response.status.to_s.include?('200') ? eval(response.body).symbolize_keys : {}

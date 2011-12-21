@@ -1,0 +1,46 @@
+PATH
+  remote: /Users/mjonuschat/Documents/routing-filter
+  specs:
+    routing-filter (0.2.4)
+      actionpack
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    actionmailer (2.3.14)
+      actionpack (= 2.3.14)
+    actionpack (2.3.14)
+      activesupport (= 2.3.14)
+      rack (~> 1.1.0)
+    activerecord (2.3.14)
+      activesupport (= 2.3.14)
+    activeresource (2.3.14)
+      activesupport (= 2.3.14)
+    activesupport (2.3.14)
+    appraisal (0.4.0)
+      bundler
+      rake
+    i18n (0.6.0)
+    rack (1.1.2)
+    rack-test (0.5.7)
+      rack (>= 1.0)
+    rails (2.3.14)
+      actionmailer (= 2.3.14)
+      actionpack (= 2.3.14)
+      activerecord (= 2.3.14)
+      activeresource (= 2.3.14)
+      activesupport (= 2.3.14)
+      rake (>= 0.8.3)
+    rake (0.9.2.2)
+    test_declarative (0.0.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  appraisal
+  i18n
+  rack-test (~> 0.5.7)
+  rails (~> 2.3.0)
+  routing-filter!
+  test_declarative

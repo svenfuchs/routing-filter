@@ -17,7 +17,7 @@ class UuidTest < Test::Unit::TestCase
   end
 
   test 'prepends the :uuid segment to the generated path if passed as a param' do
-    assert_equal "/#{uuid}/some/1", routes.generate(params)
+    assert_generates "/#{uuid}/some/1", routes.generate(params)
   end
 
   test 'matches uuid segments' do

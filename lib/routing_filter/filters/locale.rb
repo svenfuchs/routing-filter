@@ -20,8 +20,6 @@
 #   products_path(:locale => 'de')
 #   url_for(:products, :locale => 'de'))
 
-require 'i18n'
-
 module RoutingFilter
   class Locale < Filter
     @@include_default_locale = true
