@@ -1,3 +1,4 @@
 vendor
 log
 .bundle
+gemfiles/*.lock
