@@ -2,6 +2,7 @@
 
 source :rubygems
 
+gem "rack-test", "~> 0.5.7"
 gem "rails", "~> 2.3.0"
 
 gemspec :path=>"../"

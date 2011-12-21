@@ -22,6 +22,8 @@ GEM
       rake
     i18n (0.6.0)
     rack (1.1.2)
+    rack-test (0.5.7)
+      rack (>= 1.0)
     rails (2.3.14)
       actionmailer (= 2.3.14)
       actionpack (= 2.3.14)
@@ -38,6 +40,7 @@ PLATFORMS
 DEPENDENCIES
   appraisal
   i18n
+  rack-test (~> 0.5.7)
   rails (~> 2.3.0)
   routing-filter!
   test_declarative
