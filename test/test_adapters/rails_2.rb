@@ -1,5 +1,8 @@
 require 'test_helper'
 
+class SomeController < ActionController::Base
+end
+
 module TestRailsAdapter
   routes = ActionController::Routing::Routes = ActionController::Routing::RouteSet.new
   routes.draw do |map|

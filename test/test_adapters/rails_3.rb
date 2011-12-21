@@ -1,35 +1,10 @@
-require 'test_helper'
+# Configure Rails Environment
+ENV["RAILS_ENV"] = "test"
 
-require "action_controller/railtie"
-require "action_mailer/railtie"
-require "active_resource/railtie"
-require "rails/test_unit/railtie"
-require 'rack/test'
+require File.expand_path("../../dummy/config/environment.rb",  __FILE__)
+require "rails/test_help"
 
-Bundler.require
+Rails.backtrace_cleaner.remove_silencers!
 
-module TestRailsAdapter
-  include ::Rack::Test::Methods
-
-  class Application < Rails::Application
-    config.secret_token = "3b7cd727ee24e8444053437c36cc66c4"
-    config.session_store :cookie_store, :key => "_myapp_session"
-    config.active_support.deprecation = :log
-    config.i18n.default_locale = :en
-    routes.draw do
-      match "/" => "rails_test/tests#index"
-      match "/foo/:id" => "rails_test/tests#show", :as => 'foo'
-      filter :uuid, :pagination ,:locale, :extension
-    end
-  end
-
-  def app
-    ::Rails.application
-  end
-
-  def response
-    last_response
-  end
-end
-
-TestRailsAdapter::Application.initialize!
+# Load support files
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }

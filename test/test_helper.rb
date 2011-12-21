@@ -12,9 +12,6 @@ require 'active_support/core_ext/enumerable.rb'
 require 'test_declarative'
 require 'routing_filter'
 
-class SomeController < ActionController::Base
-end
-
 class Test::Unit::TestCase
   def draw_routes(&block)
     normalized_block = rails_2? ? lambda { |set| set.instance_eval(&block) } : block
