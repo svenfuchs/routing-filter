@@ -12,8 +12,6 @@ require 'active_support/core_ext/enumerable.rb'
 require 'test_declarative'
 require 'routing_filter'
 
-include RoutingFilter
-
 class SomeController < ActionController::Base
 end
 

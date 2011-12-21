@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class RoutesTest < Test::Unit::TestCase
+  include RoutingFilter
   class RoutingFilter::Test < Filter
     def around_recognize(path, env, &block)
       'recognized'
