@@ -1,6 +1,3 @@
-# Configure Rails Environment
-ENV["RAILS_ENV"] = "test"
-
 module TestRailsAdapter
   module RackTestHelper
     include Rack::Test::Methods

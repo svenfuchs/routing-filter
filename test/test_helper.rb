@@ -1,14 +1,10 @@
+# Configure Rails Environment
 ENV['RAILS_ENV'] = 'test'
 
-require 'rubygems'
 require 'test/unit'
 require 'bundler/setup'
 
-require 'i18n'
-require 'action_pack'
-require 'active_support'
 require 'action_controller'
-require 'active_support/core_ext/enumerable.rb'
 require 'test_declarative'
 require 'routing_filter'
 
