@@ -24,6 +24,24 @@ class Test::Unit::TestCase
     klass.new.tap { |set| set.draw(&normalized_block) }
   end
 
+  def assert_generates(expected_path, generated_path)
+    if expected_path =~ %r{://}
+      begin
+        uri = URI.parse(expected_path)
+        expected_path = uri.path.to_s.empty? ? "/" : uri.path
+      rescue URI::InvalidURIError => e
+        raise ActionController::RoutingError, e.message
+      end
+    else
+      expected_path = "/#{expected_path}" unless expected_path.first == '/'
+    end
+
+    generated_path, extra_keys = generated_path if generated_path.is_a?(Array)
+    generated_path << "?#{extra_keys.to_query}" unless extra_keys.blank?
+    msg = build_message(message, "The generated path <?> did not match <?>", generated_path, expected_path)
+    assert_equal(expected_path, generated_path, msg)
+  end
+
   def rails_2?
     ActionPack::VERSION::MAJOR == 2
   end
