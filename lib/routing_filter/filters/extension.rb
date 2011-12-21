@@ -25,7 +25,7 @@ module RoutingFilter
 
     def around_recognize(path, env, &block)
       extract_extension!(path) unless excluded?(path)
-      yield(path, env)
+      yield
     end
 
     def around_generate(params, &block)
