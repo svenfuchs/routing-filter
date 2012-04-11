@@ -57,6 +57,7 @@ Filters can also accept options:
 
     Rails.application.routes.draw do
       filter :extension, :exclude => %r(^admin/)
+      filter :locale,    :exclude => /^\/admin/
     end
 
 ## Running the tests
