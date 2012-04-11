@@ -14,9 +14,10 @@ class LocaleTest < Test::Unit::TestCase
     @show_params  = { :controller => 'some', :action => 'show', :id => '1' }
 
     @routes = draw_routes do
-      filter :locale
+      filter :locale, :exclude => /^\/themes/
       match 'products/:id', :to => 'some#show'
       match '/', :to => 'some#index'
+      match '/themes/products/new', :to => 'some#new'
     end
   end
 
@@ -65,5 +66,9 @@ class LocaleTest < Test::Unit::TestCase
   test 'does not prepend the segments /:locale if the given locale is the default_locale and include_default_locale is false' do
     RoutingFilter::Locale.include_default_locale = false
     assert_generates '/products/1', routes.generate(show_params.merge(:locale => I18n.default_locale))
+  end
+
+  test 'excludes with custom regexp' do
+    assert_generates '/themes/products/new', routes.generate(:controller => 'some', :action => 'new')
   end
 end
