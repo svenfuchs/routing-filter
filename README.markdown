@@ -60,6 +60,17 @@ Filters can also accept options:
       filter :locale,    :exclude => /^\/admin/
     end
 
+### Testing
+
+RoutingFilter should not be enabled in functional tests by default since the Rails router gets
+bypassed for most testcases. Having RoutingFilter enabled in this setup can cause missing parameters
+in the test environment. Routing tests can/should re-enable RoutingFilter since the whole routing stack
+gets executed for these testcases.
+
+To disable RoutingFilter in your test suite add the following to your test_helper.rb / spec_helper.rb:
+
+    RoutingFilter.active = false
+
 ## Running the tests
 
 To run the tests against different dependencies [appraisal](https://github.com/thoughtbot/appraisal) is used.
