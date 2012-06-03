@@ -2,3 +2,4 @@ vendor
 log
 .bundle
 gemfiles/*.lock
+*.gem
