@@ -17,7 +17,7 @@ class AllFiltersTest < Test::Unit::TestCase
 
     @routes = draw_routes do
       filter :uuid, :pagination ,:locale, :extension
-      match 'some', :to => 'some#index'
+      get 'some', :to => 'some#index'
     end
   end
 

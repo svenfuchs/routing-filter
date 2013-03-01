@@ -6,7 +6,7 @@ class PaginationTest < Test::Unit::TestCase
   def setup
     @routes = draw_routes do
       filter :pagination
-      match 'some', :to => 'some#index'
+      get 'some', :to => 'some#index'
     end
     @params = { :controller => 'some', :action => 'index', :page => 2 }
   end

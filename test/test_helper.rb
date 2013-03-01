@@ -47,5 +47,7 @@ if ActionPack::VERSION::MAJOR == 2
       options.merge!(:controller => controller, :action => action)
       connect(pattern, options)
     end
+
+    alias get match
   end
 end
