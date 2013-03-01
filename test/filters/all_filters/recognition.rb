@@ -12,7 +12,7 @@ module Recognition
   end
 
   test 'recognizes the path /some/page/2 (pagination)' do
-    params = self.params.merge(:page => 2)
+    params = self.params.merge(:page => '2')
     assert_equal params, routes.recognize_path('/some/page/2')
   end
 
@@ -20,7 +20,7 @@ module Recognition
     params = self.params.merge(:uuid => uuid)
     assert_equal params, routes.recognize_path("/#{uuid}/some")
   end
-  
+
   # extension with any
 
   test 'recognizes the path /de/some.html (extension, locale)' do
@@ -29,7 +29,7 @@ module Recognition
   end
 
   test 'recognizes the path /some/page/2.html (extension, pagination)' do
-    params = self.params.merge(:page => 2)
+    params = self.params.merge(:page => '2')
     assert_equal params, routes.recognize_path('/some/page/2.html')
   end
 
@@ -41,7 +41,7 @@ module Recognition
   # locale with any
 
   test 'recognizes the path /de/some/page/2 (locale, pagination)' do
-    params = self.params.merge(:locale => 'de', :page => 2)
+    params = self.params.merge(:locale => 'de', :page => '2')
     assert_equal params, routes.recognize_path('/de/some/page/2')
   end
 
@@ -53,14 +53,14 @@ module Recognition
   # pagination with any
 
   test 'recognizes the path /:uuid/some/page/2 (pagination, uuid)' do
-    params = self.params.merge(:page => 2, :uuid => uuid)
+    params = self.params.merge(:page => '2', :uuid => uuid)
     assert_equal params, routes.recognize_path("/#{uuid}/some/page/2")
   end
 
   # extension, locale with any
 
   test 'recognizes the path /de/some/page/2.html (extension, locale, pagination)' do
-    params = self.params.merge(:locale => 'de', :page => 2)
+    params = self.params.merge(:locale => 'de', :page => '2')
     assert_equal params, routes.recognize_path("/de/some/page/2.html")
   end
 
@@ -68,25 +68,25 @@ module Recognition
     params = self.params.merge(:locale => 'de', :uuid => uuid)
     assert_equal params, routes.recognize_path("/de/#{uuid}/some.html")
   end
-  
+
   # extension, pagination with any
 
   test 'recognizes the path /some/page/2.html (extension, pagination, uuid)' do
-    params = self.params.merge(:page => 2, :uuid => uuid)
+    params = self.params.merge(:page => '2', :uuid => uuid)
     assert_equal params, routes.recognize_path("/#{uuid}/some/page/2.html")
   end
-  
+
   # locale, pagination with any
 
   test 'recognizes the path /de/some/page/2 (locale, pagination, uuid)' do
-    params = self.params.merge(:locale => 'de', :page => 2, :uuid => uuid)
+    params = self.params.merge(:locale => 'de', :page => '2', :uuid => uuid)
     assert_equal params, routes.recognize_path("/de/#{uuid}/some/page/2")
   end
-  
+
   # all
 
   test 'recognizes the path /de/:uuid/some/page/2.html (extension, locale, pagination, uuid)' do
-    params = self.params.merge(:locale => 'de', :page => 2, :uuid => uuid)
+    params = self.params.merge(:locale => 'de', :page => '2', :uuid => uuid)
     assert_equal params, routes.recognize_path("/de/#{uuid}/some/page/2.html")
   end
 end
