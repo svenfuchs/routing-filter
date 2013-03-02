@@ -6,9 +6,9 @@ class PaginationTest < Test::Unit::TestCase
   def setup
     @routes = draw_routes do
       filter :pagination
-      match 'some', :to => 'some#index'
+      get 'some', :to => 'some#index'
     end
-    @params = { :controller => 'some', :action => 'index', :page => 2 }
+    @params = { :controller => 'some', :action => 'index', :page => '2' }
   end
 
   test 'recognizes the path some/page/2' do
@@ -20,7 +20,7 @@ class PaginationTest < Test::Unit::TestCase
   end
 
   test 'does not append anything to the generated path if the passed :page param equals 1' do
-    assert_generates '/some', routes.generate(params.merge(:page => 1))
+    assert_generates '/some', routes.generate(params.merge(:page => '1'))
   end
 
   test 'appends the segments /page/:page to the generated path but respects url query params' do

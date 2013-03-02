@@ -15,9 +15,9 @@ class LocaleTest < Test::Unit::TestCase
 
     @routes = draw_routes do
       filter :locale, :exclude => /^\/themes/
-      match 'products/:id', :to => 'some#show'
-      match '/', :to => 'some#index'
-      match '/themes/products/new', :to => 'some#new'
+      get 'products/:id', :to => 'some#show'
+      get '/', :to => 'some#index'
+      get '/themes/products/new', :to => 'some#new'
     end
   end
 

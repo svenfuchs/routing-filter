@@ -45,7 +45,7 @@ class RailsTest < Test::Unit::TestCase
   test "get to /page/2" do
     get '/page/2'
     assert_nil params[:locale]
-    assert_equal 2, params[:page]
+    assert_equal '2', params[:page]
     assert_nil params[:uuid]
     assert_equal '/en/page/2.html', params[:url]
   end
@@ -53,7 +53,7 @@ class RailsTest < Test::Unit::TestCase
   test "get to /foo/1/page/2" do
     get '/foo/1/page/2'
     assert_nil params[:locale]
-    assert_equal 2, params[:page]
+    assert_equal '2', params[:page]
     assert_nil params[:uuid]
     assert_equal '/en/foo/1/page/2.html', params[:url]
   end

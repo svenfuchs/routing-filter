@@ -6,7 +6,7 @@ class UuidTest < Test::Unit::TestCase
   def setup
     @routes = draw_routes do
       filter :uuid
-      match 'some/:id', :to => 'some#show'
+      get 'some/:id', :to => 'some#show'
     end
     @uuid   = 'd00fbbd1-82b6-4c1a-a57d-098d529d6854'
     @params = { :controller => 'some', :action => 'show', :id => '1', :uuid => uuid }

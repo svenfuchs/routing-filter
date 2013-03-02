@@ -1,13 +1,18 @@
-require 'journey/routes'
-require 'journey/router'
+if defined?(ActionDispatch::Journey) # rails 4
+  journey = ActionDispatch::Journey
+else # rails 3.2
+  require 'journey/routes'
+  require 'journey/router'
+  journey = Journey
+end
 
-Journey::Routes.class_eval do
+journey::Routes.class_eval do
   def filters
     @filters || RoutingFilter::Chain.new.tap { |f| @filters = f unless frozen? }
   end
 end
 
-Journey::Router.class_eval do
+journey::Router.class_eval do
   def find_routes_with_filtering env
     path, filter_parameters = env['PATH_INFO'], {}
     original_path = path.dup
