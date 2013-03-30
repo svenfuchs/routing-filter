@@ -15,6 +15,8 @@ appraise 'rails-3.2' do
   gem 'rails',      '~> 3.2.0.rc1'
 end
 
-appraise 'rails-4.0' do
-  gem 'rails',      '~> 4.0.0.beta1'
+if RUBY_VERSION >= '1.9.3'
+  appraise 'rails-4.0' do
+    gem 'rails',      '~> 4.0.0.beta1'
+  end
 end
