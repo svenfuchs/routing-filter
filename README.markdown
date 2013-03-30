@@ -1,5 +1,7 @@
 # Routing Filter
 
+[![Build Status](https://secure.travis-ci.org/svenfuchs/routing-filter.png)](http://travis-ci.org/svenfuchs/routing-filter)
+
 Routing filters wrap around the complex beast that the Rails routing system is
 to allow for unseen flexibility and power in Rails URL recognition and
 generation.
