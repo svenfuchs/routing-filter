@@ -18,6 +18,11 @@ task :all => ["appraisal:install"] do |t|
     exec('rake appraisal:rails-3.0 test')
     exec('rake appraisal:rails-3.1 test')
     exec('rake appraisal:rails-3.2 test')
+  elsif RUBY_VERSION > '1.9.3'
+    exec('rake appraisal:rails-3.0 test')
+    exec('rake appraisal:rails-3.1 test')
+    exec('rake appraisal:rails-3.2 test')
+    exec('rake appraisal:rails-4.0 test')
   else
     exec('rake appraisal test')
   end
