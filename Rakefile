@@ -13,12 +13,5 @@ task :default => [:all]
 
 desc 'Test the plugin under all supported Rails versions.'
 task :all => ["appraisal:install"] do |t|
-  if RUBY_VERSION < '1.9.3'
-    exec('rake appraisal:rails-2.3 test')
-    exec('rake appraisal:rails-3.0 test')
-    exec('rake appraisal:rails-3.1 test')
-    exec('rake appraisal:rails-3.2 test')
-  else
-    exec('rake appraisal test')
-  end
+  exec('rake appraisal test')
 end
