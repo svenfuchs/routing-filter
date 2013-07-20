@@ -3,4 +3,4 @@ rvm:
   - 1.9.3
   - 2.0.0
 
-script: "rake appraisal test"
+script: "rake appraisal:install && rake appraisal test"
