@@ -10,15 +10,18 @@ appraise 'rails-3.0' do
 end
 
 appraise 'rails-3.1' do
+  gem 'rack-test',  '~> 0.6.1'
   gem 'rails',      '~> 3.1.12'
 end
 
 appraise 'rails-3.2' do
+  gem 'rack-test',  '~> 0.6.1'
   gem 'rails',      '~> 3.2.14.rc2'
 end
 
 if RUBY_VERSION >= '1.9.3'
   appraise 'rails-4.0' do
+    gem 'rack-test',  '~> 0.6.1'
     gem 'rails',      '~> 4.0.0'
   end
 end
