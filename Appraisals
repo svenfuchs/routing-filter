@@ -24,4 +24,14 @@ if RUBY_VERSION >= '1.9.3'
     gem 'rack-test',  '~> 0.6.1'
     gem 'rails',      '~> 4.0.0'
   end
+
+  appraise 'rails-4.1' do
+    gem 'rack-test',  '~> 0.6.2'
+    gem 'rails',      '~> 4.1.0'
+  end
+
+  appraise 'rails-4.2' do
+    gem 'rack-test',  '~> 0.6.2'
+    gem 'rails',      '~> 4.2.0'
+  end
 end

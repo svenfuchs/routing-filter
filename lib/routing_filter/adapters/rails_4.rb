@@ -22,17 +22,29 @@ ActionDispatch::Routing::RouteSet.class_eval do
     names.each { |name| filters.unshift(RoutingFilter.build(name, options)) }
   end
 
-  def generate_with_filtering(options, recall = {})
-    # `around_generate` is destructive method and it breaks url. To avoid this, `dup` is required.
-    filters.run(:around_generate, options, &lambda{ generate_without_filtering(options, recall).map(&:dup) })
-  end
-  alias_method_chain :generate, :filtering
-
   def clear_with_filtering!
     filters.clear if filters
     clear_without_filtering!
   end
   alias_method_chain :clear!, :filtering
+
+  if ActionPack::VERSION::MINOR < 2
+    def generate_with_filtering(options, recall = {})
+      # `around_generate` is destructive method and it breaks url. To avoid this, `dup` is required.
+      filters.run(:around_generate, options, &lambda{
+        generate_without_filtering(options, recall).map(&:dup)
+      })
+    end
+  else
+    def generate_with_filtering(route_key, options, recall = {})
+      # `around_generate` is destructive method and it breaks url. To avoid this, `dup` is required.
+      options = options.symbolize_keys
+      filters.run(:around_generate, options, &lambda{
+        generate_without_filtering(route_key, options, recall).map(&:dup)
+      })
+    end
+  end
+  alias_method_chain :generate, :filtering
 end
 
 ActionDispatch::Journey::Routes.class_eval do

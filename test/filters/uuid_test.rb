@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UuidTest < Test::Unit::TestCase
+class UuidTest < MiniTest::Unit::TestCase
   attr_reader :routes, :uuid, :params
 
   def setup

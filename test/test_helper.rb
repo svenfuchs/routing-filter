@@ -1,18 +1,27 @@
 # Configure Rails Environment
 ENV['RAILS_ENV'] = 'test'
 
-require 'test/unit'
+require 'action_controller'
+
+require 'minitest/autorun'
 require 'bundler/setup'
 
-require 'action_controller'
 require 'test_declarative'
 require 'routing_filter'
 
-class Test::Unit::TestCase
+module GenerateFix
+  def generate(options, recall = {})
+    super(options.delete(:use_route), options, recall)
+  end
+end
+
+class MiniTest::Unit::TestCase
   def draw_routes(&block)
     normalized_block = rails_2? ? lambda { |set| set.instance_eval(&block) } : block
     klass = rails_2? ? ActionController::Routing::RouteSet : ActionDispatch::Routing::RouteSet
-    klass.new.tap { |set| set.draw(&normalized_block) }
+    instance = klass.new.tap { |set| set.draw(&normalized_block) }
+    instance.extend(GenerateFix) if rails_4_2?
+    instance
   end
 
   def assert_generates(expected_path, generated_path)
@@ -24,18 +33,22 @@ class Test::Unit::TestCase
         raise ActionController::RoutingError, e.message
       end
     else
-      expected_path = "/#{expected_path}" unless expected_path.first == '/'
+      expected_path = "/#{expected_path}" unless expected_path.start_with?('/')
     end
 
     generated_path, extra_keys = generated_path if generated_path.is_a?(Array)
     generated_path << "?#{extra_keys.to_query}" unless extra_keys.blank?
     message ||= ''
-    msg = build_message(message, "The generated path <?> did not match <?>", generated_path, expected_path)
+    msg = "The generated path #{generated_path} did not match #{expected_path}"
     assert_equal(expected_path, generated_path, msg)
   end
 
   def rails_2?
     ActionPack::VERSION::MAJOR == 2
+  end
+
+  def rails_4_2?
+    ActionPack::VERSION::MAJOR == 4 && ActionPack::VERSION::MINOR >= 2
   end
 end
 

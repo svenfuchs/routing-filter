@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RoutesTest < Test::Unit::TestCase
+class RoutesTest < MiniTest::Unit::TestCase
   include RoutingFilter
   class RoutingFilter::Test < Filter
     def around_recognize(path, env, &block)
@@ -15,10 +15,10 @@ class RoutesTest < Test::Unit::TestCase
   attr_reader :routes
 
   def setup
-    @routes = if rails_2? 
-                draw_routes { |set| set.filter :test } 
-              else 
-                draw_routes { filter :test } 
+    @routes = if rails_2?
+                draw_routes { |set| set.filter :test }
+              else
+                draw_routes { filter :test }
               end
   end
 
