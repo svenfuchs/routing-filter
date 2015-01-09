@@ -5,4 +5,9 @@ source "https://rubygems.org"
 gem "rack-test", "~> 0.6.1"
 gem "rails", "~> 3.2.14.rc2"
 
-gemspec :path=>"../"
+group :test do
+  gem "ruby-debug", :platforms => :mri_18
+  gem "debugger", :platforms => :mri_19
+end
+
+gemspec :path => "../"

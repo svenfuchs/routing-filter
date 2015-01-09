@@ -14,7 +14,9 @@ end
 
 journey::Router.class_eval do
   def find_routes_with_filtering env
-    path, filter_parameters = env['PATH_INFO'], {}
+    path = env.is_a?(Hash) ? env['PATH_INFO'] : env.path_info
+    filter_parameters = {}
+
     original_path = path.dup
 
     @routes.filters.run(:around_recognize, path, env) do

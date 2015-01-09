@@ -2,7 +2,7 @@ require 'test_helper'
 
 include RoutingFilter
 
-class RoutingFilterTest < Test::Unit::TestCase
+class RoutingFilterTest < MiniTest::Unit::TestCase
   class FooFilter < Filter
     attr_reader :name
 

@@ -67,7 +67,7 @@ module RoutingFilter
 
       args << params
 
-      yield.tap do |result|        
+      yield.tap do |result|
         url = result.is_a?(Array) ? result.first : result
         prepend_segment!(result, locale) if prepend_locale?(locale) && !excluded?(url)
       end
@@ -85,7 +85,7 @@ module RoutingFilter
     def prepend_locale?(locale)
       locale && (self.class.include_default_locale? || !default_locale?(locale))
     end
-    
+
     def excluded?(url)
       case exclude
       when Regexp
