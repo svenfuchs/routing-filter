@@ -41,7 +41,7 @@ module RoutingFilter
     protected
 
       def append_page?(page)
-        page && page.to_i != 1
+        page.try(:to_i).try(:>, 1)
       end
   end
 end
