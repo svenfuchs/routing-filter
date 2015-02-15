@@ -33,27 +33,33 @@ Just install the Gem:
 
     $ gem install routing-filter
 
-The Gem should work out of the box for Rails 4.2 after specifying it in your
+The Gem should work out of the box with Rails 4.2 after specifying it in your
 application's Gemfile.
 
-    # Gemfile
-    gem 'routing-filter'
+```ruby
+# Gemfile
+gem 'routing-filter'
+```
 
 ## Usage
 
 Once the Gem has loaded you can setup the filters in your routes file like this:
 
-    # in config/routes.rb
-    Rails.application.routes.draw do
-      filter :pagination, :uuid
-    end
+```ruby
+# in config/routes.rb
+Rails.application.routes.draw do
+  filter :pagination, :uuid
+end
+```
 
 Filters can also accept options:
 
-    Rails.application.routes.draw do
-      filter :extension, :exclude => %r(^admin/)
-      filter :locale,    :exclude => /^\/admin/
-    end
+```ruby
+Rails.application.routes.draw do
+  filter :extension, :exclude => %r(^admin/)
+  filter :locale,    :exclude => /^\/admin/
+end
+```
 
 ### Testing
 
@@ -64,7 +70,9 @@ gets executed for these testcases.
 
 To disable RoutingFilter in your test suite add the following to your test_helper.rb / spec_helper.rb:
 
-    RoutingFilter.active = false
+```ruby
+RoutingFilter.active = false
+```
 
 ## Running the tests
 
@@ -91,36 +99,40 @@ For example implementations have a look at the existing filters in
 
 The following would be a sceleton of an empty filter:
 
-    module RoutingFilter
-      class Awesomeness < Filter
-        def around_recognize(path, env, &block)
-          # Alter the path here before it gets recognized.
-          # Make sure to yield (calls the next around filter if present and
-          # eventually `recognize_path` on the routeset):
-          yield.tap do |params|
-            # You can additionally modify the params here before they get passed
-            # to the controller.
-          end
-        end
-
-        def around_generate(params, &block)
-          # Alter arguments here before they are passed to `url_for`.
-          # Make sure to yield (calls the next around filter if present and
-          # eventually `url_for` on the controller):
-          yield.tap do |result|
-            # You can change the generated url_or_path here. Make sure to use
-            # one of the "in-place" modifying String methods though (like sub!
-            # and friends).
-          end
-        end
+```ruby
+module RoutingFilter
+  class Awesomeness < Filter
+    def around_recognize(path, env, &block)
+      # Alter the path here before it gets recognized.
+      # Make sure to yield (calls the next around filter if present and
+      # eventually `recognize_path` on the routeset):
+      yield.tap do |params|
+        # You can additionally modify the params here before they get passed
+        # to the controller.
       end
     end
 
+    def around_generate(params, &block)
+      # Alter arguments here before they are passed to `url_for`.
+      # Make sure to yield (calls the next around filter if present and
+      # eventually `url_for` on the controller):
+      yield.tap do |result|
+        # You can change the generated url_or_path here. Make sure to use
+        # one of the "in-place" modifying String methods though (like sub!
+        # and friends).
+      end
+    end
+  end
+end
+```
+
 You can specify the filter explicitely in your routes.rb:
 
-    Rails.application.routes.draw do
-      filter :awesomeness
-    end
+```ruby
+Rails.application.routes.draw do
+  filter :awesomeness
+end
+```
 
 (I am not sure if it makes sense to provide more technical information than
 this because the usage of this plugin definitely requires some advanced
