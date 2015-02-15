@@ -1,3 +1,8 @@
+## 0.5.0
+
+* Rails 4.2 support
+* Rails <4.2 support dropped
+
 ## 0.3.1
 * Filters support exclude option.
 
