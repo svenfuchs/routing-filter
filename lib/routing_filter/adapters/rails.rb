@@ -22,9 +22,13 @@ ActionDispatch::Routing::RouteSet.class_eval do
     names.each { |name| filters.unshift(RoutingFilter.build(name, options)) }
   end
 
-  def generate_with_filtering(options, recall = {})
+  def generate_with_filtering(route_key, options, recall = {})
+    options = options.symbolize_keys
+
     # `around_generate` is destructive method and it breaks url. To avoid this, `dup` is required.
-    filters.run(:around_generate, options, &lambda{ generate_without_filtering(options, recall).map(&:dup) })
+    filters.run(:around_generate, options, &lambda{
+      generate_without_filtering(route_key, options, recall).map(&:dup)
+    })
   end
   alias_method_chain :generate, :filtering
 

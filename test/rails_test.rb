@@ -1,10 +1,16 @@
 require 'test_helper'
 require "test_adapters/rails_#{ActionPack::VERSION::MAJOR}"
 
-class RailsTest < Test::Unit::TestCase
+class RailsTest < Minitest::Test
   include TestRailsAdapter::RackTestHelper
 
-  I18n.available_locales = [:en, :de]
+  def setup
+    I18n.locale = nil
+    I18n.default_locale = :en
+    I18n.available_locales = [:de, :en]
+
+    RoutingFilter::Locale.include_default_locale = true
+  end
 
   def params
     response.status.to_s.include?('200') ? eval(response.body).symbolize_keys : {}

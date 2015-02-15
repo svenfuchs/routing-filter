@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PaginationTest < Test::Unit::TestCase
+class PaginationTest < Minitest::Test
   attr_reader :routes, :params
 
   def setup

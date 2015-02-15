@@ -1,12 +1,12 @@
 require 'test_helper'
 
-class LocaleTest < Test::Unit::TestCase
+class LocaleTest < Minitest::Test
   attr_reader :routes, :show_params, :index_params
 
   def setup
     I18n.locale = nil
     I18n.default_locale = :en
-    I18n.available_locales = %w(de en)
+    I18n.available_locales = [:de, :en]
 
     RoutingFilter::Locale.include_default_locale = true
 

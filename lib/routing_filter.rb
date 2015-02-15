@@ -24,4 +24,4 @@ module RoutingFilter
   end
 end
 
-require "routing_filter/adapters/rails_#{ActionPack::VERSION::MAJOR}"
+require "routing_filter/adapters/rails"

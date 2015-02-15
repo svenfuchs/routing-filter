@@ -5,7 +5,7 @@ class TestsController < ActionController::Base
   end
 
   def show
-    url = foo_path(params)
+    url = foo_path(params.symbolize_keys)
     render :text => params.merge(:url => url).inspect
   end
 end
