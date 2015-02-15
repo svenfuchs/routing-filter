@@ -19,15 +19,13 @@ implement custom ones. Maybe the most popular one is the Locale routing filter:
 * `Uuid` - prepends a uuid for authentication or other purposes (e.g. /d00fbbd1-82b6-4c1a-a57d-098d529d6854/products/1)
 * `Extension` - appends an extension (e.g. /products.html)
 
-Please note that Rails 3's routing system is much more powerful and flexible
-than Rails 2 was. There are many usecases that now can be covered with just
-Rails 3 default routing features that weren't doable in Rails 2. For an example
-of a quite complex and flexible route see this [gist by Andrew White](http://gist.github.com/653543)
 
 ## Requirements
 
-routing-filter currently only works with Rails. It should not be all too hard
+Latest routing-filter (~> 0.5.0) currently only works with Rails 4.2. It should not be all too hard
 to get it working with plain Rack::Mount but I haven't had that usecase, yet.
+
+For older Rails use `0-4-stable` branch.
 
 ## Installation
 
@@ -35,15 +33,10 @@ Just install the Gem:
 
     $ gem install routing-filter
 
-The Gem should work out of the box for Rails 3 after specifying it in your
+The Gem should work out of the box for Rails 4.2 after specifying it in your
 application's Gemfile.
 
     # Gemfile
-    gem 'routing-filter'
-
-In order to use it with Rails 2.x you could specify it in your environment.rb
-
-    # config/environment.rb
     gem 'routing-filter'
 
 ## Usage
@@ -75,19 +68,8 @@ To disable RoutingFilter in your test suite add the following to your test_helpe
 
 ## Running the tests
 
-To run the tests against different dependencies [appraisal](https://github.com/thoughtbot/appraisal) is used.
-
-Running the tests for all supported Rails versions:
-
     $ bundle install
-    $ bundle exec rake all
-
-Running the tests for a single version, for example Rails 3.1:
-
-    $ bundle install
-    $ bundle exec rake appraisal:rails-3.1 test
-
-Valid appraisal targets include rails-2.3, rails-3.0, rails-3.1 and rails-3.2
+    $ bundle exec rake test
 
 ## Filter order
 
