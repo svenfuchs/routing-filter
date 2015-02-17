@@ -2,8 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "rails", "~> 2.3.18"
-gem "rack-test", "~> 0.5.7"
-gem "i18n", "< 0.7"
+gem "rack-test", "~> 0.6.1"
+gem "rails", "~> 4.1.0"
 
 gemspec :path => "../"

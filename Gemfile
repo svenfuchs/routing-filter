@@ -1,12 +1,8 @@
 source "https://rubygems.org"
 
+if RUBY_VERSION <= '1.9.3'
+  gem 'rails', '< 4.0.0'
+  gem 'i18n', '< 0.7'
+end
+
 gemspec
-
-if RUBY_VERSION < '1.9.3'
-  gem 'activesupport', '< 4.0.0'
-end
-
-group :test do
-  gem 'ruby-debug', :platforms => :mri_18
-  gem 'debugger', :platforms => :mri_19
-end

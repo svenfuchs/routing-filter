@@ -1,14 +1,23 @@
 # Configure Rails Environment
 ENV['RAILS_ENV'] = 'test'
 
-require 'test/unit'
 require 'bundler/setup'
 
-require 'action_controller'
 require 'test_declarative'
+require 'active_support/test_case'
+require 'action_controller'
 require 'routing_filter'
 
-class Test::Unit::TestCase
+I18n.locale = :en
+I18n.default_locale = :en
+I18n.available_locales = %w(de en)
+
+class RoutingFilter::TestCase < ActiveSupport::TestCase
+  def teardown
+    I18n.locale = :en
+    RoutingFilter::Locale.include_default_locale = true
+  end
+
   def draw_routes(&block)
     normalized_block = rails_2? ? lambda { |set| set.instance_eval(&block) } : block
     klass = rails_2? ? ActionController::Routing::RouteSet : ActionDispatch::Routing::RouteSet
@@ -29,9 +38,8 @@ class Test::Unit::TestCase
 
     generated_path, extra_keys = generated_path if generated_path.is_a?(Array)
     generated_path << "?#{extra_keys.to_query}" unless extra_keys.blank?
-    message ||= ''
-    msg = build_message(message, "The generated path <?> did not match <?>", generated_path, expected_path)
-    assert_equal(expected_path, generated_path, msg)
+    message = "The generated path %s did not match %s" % [generated_path, expected_path]
+    assert_equal(expected_path, generated_path, message)
   end
 
   def rails_2?

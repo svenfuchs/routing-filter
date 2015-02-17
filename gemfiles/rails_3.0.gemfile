@@ -3,5 +3,6 @@
 source "https://rubygems.org"
 
 gem "rails", "~> 3.0.20"
+gem "i18n", "< 0.7"
 
-gemspec :path=>"../"
+gemspec :path => "../"

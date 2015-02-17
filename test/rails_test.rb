@@ -1,10 +1,8 @@
 require 'test_helper'
 require "test_adapters/rails_#{ActionPack::VERSION::MAJOR}"
 
-class RailsTest < Test::Unit::TestCase
+class RailsTest < RoutingFilter::TestCase
   include TestRailsAdapter::RackTestHelper
-
-  I18n.available_locales = [:en, :de]
 
   def params
     response.status.to_s.include?('200') ? eval(response.body).symbolize_keys : {}

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ForceExtensionTest < Test::Unit::TestCase
+class ForceExtensionTest < RoutingFilter::TestCase
   attr_reader :routes, :params
 
   def setup
