@@ -61,6 +61,16 @@ Rails.application.routes.draw do
 end
 ```
 
+The locale filter may be configured to not include the default locale:
+
+    # in config/initializers/routing_filter.rb
+    # Do not include default locale in generated URLs
+    RoutingFilter::Locale.include_default_locale = false
+    
+    # Then if the default locale is :de
+    # products_path(:locale => 'de') => /products
+    # products_path(:locale => 'en') => /en/products
+
 ### Testing
 
 RoutingFilter should not be enabled in functional tests by default since the Rails router gets
