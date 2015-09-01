@@ -1,3 +1,7 @@
+## 0.5.1
+
+* Handle env as Hash and object at the same time in journey overrides.
+
 ## 0.5.0
 
 * Rails 4.2 only support
