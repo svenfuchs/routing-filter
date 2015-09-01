@@ -81,4 +81,15 @@ class RailsTest < Minitest::Test
     assert_equal uuid, params[:uuid]
     assert_equal "/en/#{uuid}/foo/1.html", params[:url]
   end
+
+  test "check request object" do
+    get "/de/foo/1"
+    assert_equal "/de/foo/1", last_request.path
+
+    get "/foo/1"
+    assert_equal "/foo/1", last_request.path
+
+    get "/de/foo/1?bar=baz"
+    assert_equal "/de/foo/1?bar=baz", last_request.fullpath
+  end
 end
