@@ -4,3 +4,6 @@ rvm:
   - 2.2.0
 
 script: "rake test"
+env:
+  - RAILS_VERSION=4.2
+  - RAILS_VERSION=5.0.0.beta3

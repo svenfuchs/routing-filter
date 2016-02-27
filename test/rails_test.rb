@@ -1,5 +1,5 @@
 require 'test_helper'
-require "test_adapters/rails_#{ActionPack::VERSION::MAJOR}"
+require "test_adapters/rails"
 
 class RailsTest < Minitest::Test
   include TestRailsAdapter::RackTestHelper
