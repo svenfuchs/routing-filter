@@ -4,8 +4,8 @@ ActionDispatch::Journey::Routes.class_eval do
   end
 end
 
-ActionDispatch::Journey::Router.class_eval do
-  def find_routes_with_filtering(env)
+module ActionDispatchJourneyRouterWithFiltering
+  def find_routes(env)
     path = env.is_a?(Hash) ? env['PATH_INFO'] : env.path_info
     filter_parameters = {}
     original_path = path.dup
@@ -14,7 +14,7 @@ ActionDispatch::Journey::Router.class_eval do
       filter_parameters
     end
 
-    find_routes_without_filtering(env).map do |match, parameters, route|
+    super(env).map do |match, parameters, route|
       [ match, parameters.merge(filter_parameters), route ]
     end.tap do |match, parameters, route|
       # restore the original path
@@ -25,5 +25,6 @@ ActionDispatch::Journey::Router.class_eval do
       end
     end
   end
-  alias_method_chain :find_routes, :filtering
 end
+
+ActionDispatch::Journey::Router.send(:prepend, ActionDispatchJourneyRouterWithFiltering)

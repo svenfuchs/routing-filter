@@ -12,7 +12,7 @@ mappers.each do |mapper|
   end
 end
 
-ActionDispatch::Routing::RouteSet.class_eval do
+module ActionDispatchRoutingRouteSetWithFiltering
   def filters
     @set.filters if @set
   end
@@ -22,22 +22,23 @@ ActionDispatch::Routing::RouteSet.class_eval do
     names.each { |name| filters.unshift(RoutingFilter.build(name, options)) }
   end
 
-  def generate_with_filtering(route_key, options, recall = {})
+  def generate(route_key, options, recall = {})
     options = options.symbolize_keys
 
     # `around_generate` is destructive method and it breaks url. To avoid this, `dup` is required.
     filters.run(:around_generate, options, &lambda{
-      generate_without_filtering(route_key, options, recall).map(&:dup)
+      super(route_key, options, recall).map(&:dup)
     })
   end
-  alias_method_chain :generate, :filtering
 
-  def clear_with_filtering!
+  def clear!
     filters.clear if filters
-    clear_without_filtering!
+    super
   end
-  alias_method_chain :clear!, :filtering
 end
+
+ActionDispatch::Routing::RouteSet.send(:prepend, ActionDispatchRoutingRouteSetWithFiltering)
+
 
 ActionDispatch::Journey::Routes.class_eval do
   def filters
