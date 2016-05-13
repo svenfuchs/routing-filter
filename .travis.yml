@@ -6,4 +6,4 @@ rvm:
 script: "bundle exec rake test"
 env:
   - RAILS_VERSION=4.2
-  - RAILS_VERSION=5.0.0.beta3
+  - RAILS_VERSION=5.0.0.rc1
