@@ -42,7 +42,7 @@ ActionDispatch::Routing::RouteSet.send(:prepend, ActionDispatchRoutingRouteSetWi
 
 ActionDispatch::Journey::Routes.class_eval do
   def filters
-    @filters || RoutingFilter::Chain.new.tap { |f| @filters = f unless frozen? }
+    @filters ||= RoutingFilter::Chain.new.tap { |f| @filters = f unless frozen? }
   end
 end
 

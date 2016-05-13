@@ -1,9 +1,3 @@
-ActionDispatch::Journey::Routes.class_eval do
-  def filters
-    @filters || RoutingFilter::Chain.new.tap { |f| @filters = f unless frozen? }
-  end
-end
-
 module ActionDispatchJourneyRouterWithFiltering
   def find_routes(env)
     path = env.is_a?(Hash) ? env['PATH_INFO'] : env.path_info
