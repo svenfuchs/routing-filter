@@ -22,7 +22,7 @@ implement custom ones. Maybe the most popular one is the Locale routing filter:
 
 ## Requirements
 
-Latest routing-filter (~> 0.5.0) currently only works with Rails 4.2. It should not be all too hard
+Latest routing-filter (~> 0.5.0) currently only works with Rails 5.0 and 4.2. It should not be all too hard
 to get it working with plain Rack::Mount but I haven't had that usecase, yet.
 
 For older Rails use `0-4-stable` branch.
