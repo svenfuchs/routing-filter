@@ -7,3 +7,4 @@ script: "bundle exec rake test"
 env:
   - RAILS_VERSION=4.2
   - RAILS_VERSION=5.0.0
+  - RAILS_VERSION=5.1.1
