@@ -64,7 +64,7 @@ module RoutingFilter
       end
       
       def mime_extension?(url)
-        url =~ /\.#{Mime::EXTENSION_LOOKUP.keys.join('|')}(\?|$)/
+        url =~ /\.#{Mime::EXTENSION_LOOKUP.keys.map { |ext| Regexp.escape(ext) }.join('|')}(\?|$)/
       end
   end
 end
