@@ -25,4 +25,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'test_declarative'
   s.add_development_dependency 'rack-test', '~> 0.6.2'
   s.add_development_dependency 'rails', rails_version
+  s.add_development_dependency 'minitest', '< 5.10.2'
 end
