@@ -25,22 +25,25 @@ module RoutingFilter
     def initialize(*args)
       super
       @exclude = options[:exclude]
-      @prefix = nil
     end
 
     def around_recognize(path, env, &block)
-      @prefix = extract_segment!(self.class.prefixes_pattern, path)
+      prefix = extract_segment!(self.class.prefixes_pattern, path)
+
+      Thread.current.thread_variable_set('prefix', prefix)
 
       yield.tap do |params|
-        params[:prefix] = @prefix unless @prefix.nil?
+        params[:prefix] = prefix unless prefix.nil?
       end
     end
 
     def around_generate(*args, &block)
-      yield.tap do |result|        
+      yield.tap do |result|
         url = result.is_a?(Array) ? result.first : result
 
-        prepend_segment!(result, @prefix) if !@prefix.nil? && !excluded?(url)
+        prefix = Thread.current.thread_variable_get('prefix')
+
+        prepend_segment!(result, prefix) if !prefix.nil? && !excluded?(url)
       end
     end
 

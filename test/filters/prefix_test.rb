@@ -15,6 +15,8 @@ class PrefixTest < Minitest::Test
       get '/', to: 'some#index'
       get '/admin/products/new', to: 'some#new'
     end
+
+    Thread.current.thread_variable_set('prefix', nil)
   end
 
   test 'recognizes the path /prefix' do
