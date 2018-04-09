@@ -2,10 +2,14 @@ sudo: false
 cache: bundler
 rvm:
   - 2.2.4
-
-script: "bundle exec rake test"
+  - 2.5.1
 env:
-  - RAILS_VERSION=4.2
+  - RAILS_VERSION=4.2.0
   - RAILS_VERSION=5.0.0
-  - RAILS_VERSION=5.1.1
+  - RAILS_VERSION=5.1.0
   - RAILS_VERSION=5.2.0
+before_install:
+  # https://github.com/travis-ci/travis-ci/issues/8978
+  - gem update --system
+  - gem install bundler
+script: "bundle exec rake test"
