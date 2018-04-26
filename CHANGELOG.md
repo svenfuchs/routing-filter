@@ -1,4 +1,4 @@
-## Unreleased
+## 0.6.2
 
 * Rails 5.2 support
 
