@@ -1,7 +1,7 @@
 $:.unshift File.expand_path('../lib', __FILE__)
 require 'routing_filter/version'
 
-rails_version = ['>= 4.2', '< 6']
+rails_version = ['>= 4.2']
 
 Gem::Specification.new do |s|
   s.name         = "routing-filter"

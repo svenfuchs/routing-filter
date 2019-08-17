@@ -3,11 +3,13 @@ cache: bundler
 rvm:
   - 2.2.4
   - 2.5.1
+  - 2.6.3
 env:
   - RAILS_VERSION=4.2.0
   - RAILS_VERSION=5.0.0
   - RAILS_VERSION=5.1.0
   - RAILS_VERSION=5.2.0
+  - RAILS_VERSION=6.0.0
 before_install:
   # https://github.com/travis-ci/travis-ci/issues/8978
   - gem update --system
