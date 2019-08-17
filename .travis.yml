@@ -1,3 +1,5 @@
+language: ruby
+
 sudo: false
 cache: bundler
 rvm:
@@ -22,7 +24,19 @@ script: "bundle exec rake test"
 matrix:
   exclude:
     - rvm: 2.0.0
+      gemfile: gemfiles/Gemfile-rails.5.0.x
+    - rvm: 2.0.0
+      gemfile: gemfiles/Gemfile-rails.5.1.x
+    - rvm: 2.0.0
+      gemfile: gemfiles/Gemfile-rails.5.2.x
+    - rvm: 2.1.0
       gemfile: gemfiles/Gemfile-rails.6.0.x
+    - rvm: 2.1.0
+      gemfile: gemfiles/Gemfile-rails.5.0.x
+    - rvm: 2.1.0
+      gemfile: gemfiles/Gemfile-rails.5.1.x
+    - rvm: 2.1.0
+      gemfile: gemfiles/Gemfile-rails.5.2.x
     - rvm: 2.1.0
       gemfile: gemfiles/Gemfile-rails.6.0.x
     - rvm: 2.2.4
