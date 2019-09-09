@@ -1,15 +1,47 @@
+language: ruby
+
 sudo: false
 cache: bundler
 rvm:
+  - 2.0.0
+  - 2.1.0
   - 2.2.4
+  - 2.3.8
+  - 2.4.6
   - 2.5.1
-env:
-  - RAILS_VERSION=4.2.0
-  - RAILS_VERSION=5.0.0
-  - RAILS_VERSION=5.1.0
-  - RAILS_VERSION=5.2.0
+  - 2.6.0
+gemfile:
+  - gemfiles/Gemfile-rails.4.2.x
+  - gemfiles/Gemfile-rails.5.0.x
+  - gemfiles/Gemfile-rails.5.1.x
+  - gemfiles/Gemfile-rails.5.2.x
+  - gemfiles/Gemfile-rails.6.0.x
 before_install:
-  # https://github.com/travis-ci/travis-ci/issues/8978
-  - gem update --system
-  - gem install bundler
+  # Rails 4.2 required bunlder < 2
+  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
+  - gem install bundler -v '< 2'
 script: "bundle exec rake test"
+matrix:
+  exclude:
+    - rvm: 2.0.0
+      gemfile: gemfiles/Gemfile-rails.5.0.x
+    - rvm: 2.0.0
+      gemfile: gemfiles/Gemfile-rails.5.1.x
+    - rvm: 2.0.0
+      gemfile: gemfiles/Gemfile-rails.5.2.x
+    - rvm: 2.0.0
+      gemfile: gemfiles/Gemfile-rails.6.0.x
+    - rvm: 2.1.0
+      gemfile: gemfiles/Gemfile-rails.5.0.x
+    - rvm: 2.1.0
+      gemfile: gemfiles/Gemfile-rails.5.1.x
+    - rvm: 2.1.0
+      gemfile: gemfiles/Gemfile-rails.5.2.x
+    - rvm: 2.1.0
+      gemfile: gemfiles/Gemfile-rails.6.0.x
+    - rvm: 2.2.4
+      gemfile: gemfiles/Gemfile-rails.6.0.x
+    - rvm: 2.3.8
+      gemfile: gemfiles/Gemfile-rails.6.0.x
+    - rvm: 2.4.6
+      gemfile: gemfiles/Gemfile-rails.6.0.x
