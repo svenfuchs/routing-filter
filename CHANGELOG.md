@@ -1,3 +1,11 @@
+## 0.6.3
+
+* Rails 6.0 support
+
+## 0.6.2
+
+* Rails 5.2 support
+
 ## 0.6.1
 
 * Rails 5.1 support
