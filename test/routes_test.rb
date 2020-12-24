@@ -15,7 +15,7 @@ class RoutesTest < Minitest::Test
   attr_reader :routes
 
   def setup
-    @routes = draw_routes { filter :test } 
+    @routes = draw_routes { filter :test }
   end
 
   test "routes.filter instantiates and registers a filter" do
@@ -27,6 +27,6 @@ class RoutesTest < Minitest::Test
   # end
 
   test "filter.around_generate is being called" do
-    assert_equal 'generated', routes.generate({})
+    assert_equal 'generated', routes.path_for({})
   end
 end
