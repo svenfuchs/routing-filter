@@ -34,7 +34,7 @@ module RoutingFilter
     def around_generate(params, &block)
       page = params.delete(:page)
       yield.tap do |result|
-        append_segment!(result, "page/#{page}") if append_page?(page)
+        result.update append_segment(result.url, "page/#{page}") if append_page?(page)
       end
     end
 

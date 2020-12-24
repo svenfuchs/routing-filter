@@ -1,14 +1,11 @@
 require 'action_dispatch'
 require 'active_support/core_ext/module/aliasing'
 require 'active_support/core_ext/hash/reverse_merge'
+require 'routing_filter/result_wrapper'
 
-mappers = [ActionDispatch::Routing::Mapper]
-mappers << ActionDispatch::Routing::DeprecatedMapper if defined?(ActionDispatch::Routing::DeprecatedMapper)
-mappers.each do |mapper|
-  mapper.class_eval do
-    def filter(*args)
-      @set.add_filters(*args)
-    end
+ActionDispatch::Routing::Mapper.class_eval do
+  def filter(*args)
+    @set.add_filters(*args)
   end
 end
 
@@ -25,10 +22,9 @@ module ActionDispatchRoutingRouteSetWithFiltering
   def generate(route_key, options, recall = {})
     options = options.symbolize_keys
 
-    # `around_generate` is destructive method and it breaks url. To avoid this, `dup` is required.
-    filters.run(:around_generate, options, &lambda{
-      super(route_key, options, recall).map(&:dup)
-    })
+    filters.run(:around_generate, options, &lambda {
+      RoutingFilter::ResultWrapper.new(super(route_key, options, recall))
+    }).generate
   end
 
   def clear!
@@ -37,8 +33,7 @@ module ActionDispatchRoutingRouteSetWithFiltering
   end
 end
 
-ActionDispatch::Routing::RouteSet.send(:prepend, ActionDispatchRoutingRouteSetWithFiltering)
-
+ActionDispatch::Routing::RouteSet.prepend ActionDispatchRoutingRouteSetWithFiltering
 
 ActionDispatch::Journey::Routes.class_eval do
   def filters
