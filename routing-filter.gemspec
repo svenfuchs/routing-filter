@@ -6,6 +6,7 @@ rails_version = ['>= 6.1']
 Gem::Specification.new do |s|
   s.name         = "routing-filter"
   s.version      = RoutingFilter::VERSION
+  s.license      = "MIT"
   s.authors      = ["Sven Fuchs"]
   s.email        = "svenfuchs@artweb-design.de"
   s.homepage     = "http://github.com/svenfuchs/routing-filter"
