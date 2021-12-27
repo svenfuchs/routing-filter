@@ -40,35 +40,35 @@ class LocaleTest < Minitest::Test
 
   test 'prepends the segments /:locale to the generated path / if the current locale is not the default locale' do
     I18n.locale = 'de'
-    assert_generates '/de', routes.generate(index_params)
+    assert_generates '/de', routes.path_for(index_params)
   end
 
   test 'prepends the segments /:locale to the generated path /products/1 if the current locale is not the default locale' do
     I18n.locale = 'de'
-    assert_generates '/de/products/1', routes.generate(show_params)
+    assert_generates '/de/products/1', routes.path_for(show_params)
   end
 
   test 'prepends the segments /:locale to the generated path if it was passed as a param' do
-    assert_generates '/de/products/1', routes.generate(show_params.merge(:locale => 'de'))
+    assert_generates '/de/products/1', routes.path_for(show_params.merge(:locale => 'de'))
   end
 
   test 'prepends the segments /:locale if the given locale is the default_locale and include_default_locale is true' do
     assert RoutingFilter::Locale.include_default_locale?
-    assert_generates '/en/products/1', routes.generate(show_params.merge(:locale => 'en'))
+    assert_generates '/en/products/1', routes.path_for(show_params.merge(:locale => 'en'))
   end
 
   test 'does not prepend the segments /:locale if the current locale is the default_locale and include_default_locale is false' do
     I18n.locale = 'en'
     RoutingFilter::Locale.include_default_locale = false
-    assert_generates '/products/1', routes.generate(show_params)
+    assert_generates '/products/1', routes.path_for(show_params)
   end
 
   test 'does not prepend the segments /:locale if the given locale is the default_locale and include_default_locale is false' do
     RoutingFilter::Locale.include_default_locale = false
-    assert_generates '/products/1', routes.generate(show_params.merge(:locale => I18n.default_locale))
+    assert_generates '/products/1', routes.path_for(show_params.merge(:locale => I18n.default_locale))
   end
 
   test 'excludes with custom regexp' do
-    assert_generates '/themes/products/new', routes.generate(:controller => 'some', :action => 'new')
+    assert_generates '/themes/products/new', routes.path_for(:controller => 'some', :action => 'new')
   end
 end

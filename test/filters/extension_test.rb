@@ -22,27 +22,27 @@ class ForceExtensionTest < Minitest::Test
   end
 
   test 'appends the extension .html to the generated path' do
-    assert_generates '/some/1.html', routes.generate(params)
+    assert_generates '/some/1.html', routes.path_for(params)
   end
 
   test 'does not touch existing extensions in generated paths' do
-    assert_generates '/some/1.xml', routes.generate(params.merge(:format => 'xml'))
+    assert_generates '/some/1.xml', routes.path_for(params.merge(:format => 'xml'))
   end
 
   test 'does not touch url query params in generated paths' do
-    assert_generates '/some/1.html?foo=bar', routes.generate(params.merge(:foo => 'bar'))
+    assert_generates '/some/1.html?foo=bar', routes.path_for(params.merge(:foo => 'bar'))
   end
 
   test 'excludes / by default' do
-    assert_generates '/', routes.generate(:controller => 'some', :action => 'index')
+    assert_generates '/', routes.path_for(:controller => 'some', :action => 'index')
   end
 
   test 'excludes / by default (with url query params)' do
-    assert_generates '/?foo=bar', routes.generate(:controller => 'some', :action => 'index', :foo => 'bar')
+    assert_generates '/?foo=bar', routes.path_for(:controller => 'some', :action => 'index', :foo => 'bar')
   end
 
   test 'excludes with custom regexp' do
-    assert_generates '/admin/some/new', routes.generate(:controller => 'some', :action => 'new')
+    assert_generates '/admin/some/new', routes.path_for(:controller => 'some', :action => 'new')
   end
 
   # TODO - why would anyone want to have this?

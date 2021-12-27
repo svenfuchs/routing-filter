@@ -24,14 +24,12 @@ module RoutingFilter
         $1
       end
 
-      def prepend_segment!(result, segment)
-        url = result.is_a?(Array) ? result.first : result
-        url.sub!(%r(^(http.?://[^/]*)?(.*))) { "#{$1}/#{segment}#{$2 == '/' ? '' : $2}" }
+      def prepend_segment(url, segment)
+        url.sub(%r(^(http.?://[^/]*)?(.*))) { "#{$1}/#{segment}#{$2 == '/' ? '' : $2}" }
       end
 
-      def append_segment!(result, segment)
-        url = result.is_a?(Array) ? result.first : result
-        url.sub!(%r(/?($|\?))) { "/#{segment}#{$1}" }
+      def append_segment(url, segment)
+        url.sub(%r(/?($|\?))) { "/#{segment}#{$1}" }
       end
   end
 end

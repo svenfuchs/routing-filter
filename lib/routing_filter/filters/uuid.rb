@@ -22,7 +22,7 @@
 module RoutingFilter
   class Uuid < Filter
     UUID_SEGMENT = %r(^/?([a-z\d]{8}\-[a-z\d]{4}\-[a-z\d]{4}\-[a-z\d]{4}\-[a-z\d]{12})(/)?)
-    
+
     def around_recognize(path, env, &block)
       uuid = extract_segment!(UUID_SEGMENT, path)
       yield.tap do |params|
@@ -33,7 +33,7 @@ module RoutingFilter
     def around_generate(params, &block)
       uuid = params.delete(:uuid)
       yield.tap do |result|
-        prepend_segment!(result, uuid) if uuid
+        result.update prepend_segment(result.url, uuid) if uuid
       end
     end
   end
