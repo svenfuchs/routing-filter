@@ -39,11 +39,9 @@ module RoutingFilter
 
     def around_generate(*args, &block)
       yield.tap do |result|
-        url = result.is_a?(Array) ? result.first : result
-
         prefix = Thread.current.thread_variable_get('prefix')
 
-        prepend_segment!(result, prefix) if !prefix.nil? && !excluded?(url)
+        result.update prepend_segment(result.url, prefix) if !prefix.nil? && !excluded?(result.url)
       end
     end
 
@@ -63,7 +61,7 @@ module RoutingFilter
     end
 
     protected
-    
+
     def excluded?(url)
       case exclude
       when Regexp

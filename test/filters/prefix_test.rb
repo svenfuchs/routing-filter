@@ -34,16 +34,16 @@ class PrefixTest < Minitest::Test
   test 'prepend if prefix exists' do
     routes.recognize_path('/prefix/products/1')
 
-    assert_generates '/prefix/products/1', routes.generate(show_params)
+    assert_generates '/prefix/products/1', routes.path_for(show_params)
   end
 
   test 'prepend if prefix not exists' do
-    assert_generates '/products/1', routes.generate(show_params)
+    assert_generates '/products/1', routes.path_for(show_params)
   end
 
   test 'excludes with custom regexp' do
     routes.recognize_path('/prefix/products/1')
 
-    assert_generates '/admin/products/new', routes.generate(controller: 'some', action: 'new')
+    assert_generates '/admin/products/new', routes.path_for(controller: 'some', action: 'new')
   end
 end
