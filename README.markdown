@@ -22,11 +22,11 @@ implement custom ones. Maybe the most popular one is the Locale routing filter:
 
 ## Requirements
 
-Latest routing-filter (~> 0.6.0) currently only works with Rails >= 4.2. It should
+Latest `routing-filter (~> 0.7.0)` only works with `Rails >= 6.1`. It should
 not be all too hard to get it working with plain Rack::Mount but I haven't had that
 usecase, yet.
 
-For older Rails use `0-4-stable` branch.
+For older Rails versions you have to use respective older releases.
 
 ## Installation
 
@@ -34,7 +34,7 @@ Just install the Gem:
 
     $ gem install routing-filter
 
-The Gem should work out of the box with Rails 4.2 after specifying it in your
+The Gem should work out of the box with Rails 6.1 after specifying it in your
 application's Gemfile.
 
 ```ruby
