@@ -8,15 +8,16 @@ module ActionDispatchJourneyRouterWithFiltering
       filter_parameters
     end
 
-    super(env).map do |match, parameters, route|
-      [ match, parameters.merge(filter_parameters), route ]
-    end.tap do |match, parameters, route|
-      # restore the original path
+    super(env) do |match, parameters, route|
+      parameters = parameters.merge(filter_parameters)
+
       if env.is_a?(Hash)
         env['PATH_INFO'] = original_path
       else
         env.path_info = original_path
       end
+
+      yield [match, parameters, route]
     end
   end
 end
